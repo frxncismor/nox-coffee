@@ -76,6 +76,17 @@ const panels = [
           `}
           style={index === 0 ? '' : 'opacity: 0;'}
         >
+          <!-- Numeric index label -->
+          <span style="
+            font-family: var(--font-inter), monospace;
+            font-size: 10px;
+            letter-spacing: 0.2em;
+            color: var(--nox-accent);
+            opacity: 0.5;
+            display: block;
+            margin-bottom: 1rem;
+          ">0{index + 1}</span>
+
           <!-- Panel label — small caps, gold accent -->
           <p
             class="text-label mb-6"

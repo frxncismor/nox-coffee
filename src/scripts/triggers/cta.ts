@@ -1,4 +1,5 @@
 import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 interface Opts {
   desktop: boolean;
@@ -6,17 +7,36 @@ interface Opts {
 
 export function initCta({ desktop: _desktop }: Opts): void {
   gsap.context(() => {
-    // CTA animations fire on both desktop and mobile — not pinned
-    gsap.from('[data-section="cta"] .cta-headline, [data-section="cta"] .cta-subhead', {
-      scrollTrigger: {
-        trigger: '[data-section="cta"]',
-        start: 'top 75%',
-      },
-      autoAlpha: 0,
-      y: 40,
-      stagger: 0.2,
-      duration: 0.8,
-      ease: 'power2.out',
-    });
+    gsap.fromTo(
+      '[data-section="cta"] .cta-headline',
+      { scale: 1.5, opacity: 0 },
+      {
+        scale: 1,
+        opacity: 1,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: '[data-section="cta"]',
+          start: 'top 80%',
+          end: 'top 20%',
+          scrub: 1,
+        },
+      }
+    );
+
+    gsap.fromTo(
+      '[data-section="cta"] .cta-subhead',
+      { scale: 1.5, opacity: 0 },
+      {
+        scale: 1,
+        opacity: 1,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: '[data-section="cta"]',
+          start: 'top 70%',
+          end: 'top 15%',
+          scrub: 1,
+        },
+      }
+    );
   });
 }

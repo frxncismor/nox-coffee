@@ -23,4 +23,19 @@ export function initScrollProgress(): void {
       bar.style.transform = `scaleX(${self.progress})`;
     },
   });
+
+  const clock = document.querySelector<HTMLTimeElement>('#nox-clock');
+  if (clock) {
+    function updateClock(): void {
+      const now = new Date();
+      const h = String(now.getHours()).padStart(2, '0');
+      const m = String(now.getMinutes()).padStart(2, '0');
+      clock!.textContent = `${h}:${m}`;
+      const isNight = now.getHours() >= 23 || now.getHours() < 7;
+      clock!.style.color = isNight ? 'var(--nox-accent)' : 'var(--nox-fg)';
+      clock!.style.opacity = isNight ? '0.7' : '0.3';
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
+  }
 }

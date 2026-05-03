@@ -16,11 +16,12 @@ export function initLineup({ desktop }: Opts): void {
 
   const cards = track.querySelectorAll<HTMLElement>('[data-product-card]');
 
-  // Start cards slightly off-screen to the right
-  gsap.set(cards, { x: 60, opacity: 0 });
+  // Start cards at reduced scale and opacity — containerAnimation handles reveal
+  gsap.set(cards, { scale: 0.88, opacity: 0.4 });
 
   const tl = gsap.timeline({
     scrollTrigger: {
+      id: 'lineupScroll',
       trigger: section,
       start: 'top top',
       end: () => `+=${track.scrollWidth - window.innerWidth + 80}`,
@@ -34,10 +35,37 @@ export function initLineup({ desktop }: Opts): void {
   // Translate the entire track
   tl.to(track, { x: -(track.scrollWidth - window.innerWidth + 80), ease: 'none', duration: 1 });
 
-  // Each card fades in as it enters the viewport during horizontal scroll
-  cards.forEach((card, i) => {
-    const progress = i / cards.length;
-    tl.to(card, { x: 0, opacity: 1, duration: 0.15, ease: 'power2.out' }, progress * 0.6);
+  // Individual card reveal via containerAnimation
+  cards.forEach((card) => {
+    gsap.fromTo(
+      card,
+      { scale: 0.88, opacity: 0.4 },
+      {
+        scale: 1,
+        opacity: 1,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: card,
+          containerAnimation: ScrollTrigger.getById('lineupScroll'),
+          start: 'left center',
+          end: 'center center',
+          scrub: 1,
+        },
+      }
+    );
+  });
+
+  // Section heading scales down as horizontal scroll progresses
+  gsap.to('[data-lineup-section] h2, [data-lineup-section] p', {
+    scale: 0.7,
+    opacity: 0.3,
+    ease: 'none',
+    scrollTrigger: {
+      trigger: section,
+      start: 'top top',
+      end: () => `+=${track.scrollWidth - window.innerWidth + 80}`,
+      scrub: 1,
+    },
   });
 
   // Recalculate after images load — dimensions may change

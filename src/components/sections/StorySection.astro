@@ -20,6 +20,17 @@ const allText = t.story.blocks.map((b) => b.replace(/\n/g, ' ')).join(' ');
         aria-hidden="true"
         style={`opacity: ${blockIndex === 0 ? 1 : 0};`}
       >
+        <div
+          data-story-accent
+          style="
+            width: 2px;
+            height: 3rem;
+            background: var(--nox-accent);
+            margin-bottom: 1.5rem;
+            transform-origin: bottom;
+            transform: scaleY(0);
+          "
+        ></div>
         {text.split('\n').map((line) => (
           <p
             class="text-display-md leading-relaxed"

@@ -62,6 +62,33 @@ const heroImageUrl = 'https://images.unsplash.com/photo-1495474472287-4d71bcdd20
       {t.hero.tagline}
     </p>
 
+    <!-- Steam Easter Egg — barely visible, pure atmosphere -->
+    <div
+      aria-hidden="true"
+      style="
+        position: absolute;
+        bottom: 12rem;
+        left: 50%;
+        transform: translateX(-50%);
+        opacity: 0.18;
+        pointer-events: none;
+      "
+    >
+      <svg width="60" height="48" viewBox="0 0 60 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <style>
+          @keyframes steam1 { 0%,100%{d:path("M10 40 Q8 30 10 20 Q12 10 10 0")} 50%{d:path("M10 40 Q14 30 10 20 Q6 10 10 0")} }
+          @keyframes steam2 { 0%,100%{d:path("M30 40 Q28 28 30 18 Q32 8 30 0")} 50%{d:path("M30 40 Q34 28 30 18 Q26 8 30 0")} }
+          @keyframes steam3 { 0%,100%{d:path("M50 40 Q48 30 50 20 Q52 10 50 0")} 50%{d:path("M50 40 Q54 30 50 20 Q46 10 50 0")} }
+          .s1{animation:steam1 3s ease-in-out infinite}
+          .s2{animation:steam2 3.5s ease-in-out infinite 0.5s}
+          .s3{animation:steam3 4s ease-in-out infinite 1s}
+        </style>
+        <path class="s1" d="M10 40 Q8 30 10 20 Q12 10 10 0" stroke="#F5E6D3" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+        <path class="s2" d="M30 40 Q28 28 30 18 Q32 8 30 0" stroke="#F5E6D3" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+        <path class="s3" d="M50 40 Q48 30 50 20 Q52 10 50 0" stroke="#F5E6D3" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+      </svg>
+    </div>
+
     <!-- Scroll cue — whispered, no arrows -->
     <div
       data-scroll-cue

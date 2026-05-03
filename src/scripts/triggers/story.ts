@@ -47,7 +47,7 @@ export function initStory({ desktop }: Opts): void {
     },
   });
 
-  // All blocks start hidden
+  // All blocks start hidden below
   gsap.set(blocks, { opacity: 0, y: 32 });
 
   blocks.forEach((block, i) => {
@@ -55,14 +55,66 @@ export function initStory({ desktop }: Opts): void {
     const segmentSize = 1 / blocks.length;
     const start = i * segmentSize;
     const mid = start + segmentSize * 0.3;
+    const exit = start + segmentSize * 0.65;
 
-    // Bring current block in
-    tl.to(block, { opacity: 1, y: 0, duration: segmentSize * 0.3, ease: 'power2.out' }, start);
+    const accent = block.querySelector<HTMLElement>('[data-story-accent]');
 
-    // Dim previous block when current arrives
+    // Enter: slide up and fade in
+    tl.fromTo(
+      block,
+      { opacity: 0, y: 32 },
+      { opacity: 1, y: 0, duration: segmentSize * 0.3, ease: 'power2.out' },
+      start
+    );
+
+    // Accent line scaleY 0 → 1 on enter
+    if (accent) {
+      tl.fromTo(
+        accent,
+        { scaleY: 0 },
+        { scaleY: 1, duration: segmentSize * 0.25, ease: 'power2.out', transformOrigin: 'bottom' },
+        start + segmentSize * 0.05
+      );
+    }
+
+    // Exit previous block completely (opacity 0, y -32)
     if (!isFirst) {
       const prev = blocks[i - 1];
-      tl.to(prev, { opacity: 0.25, duration: segmentSize * 0.2, ease: 'power1.in' }, mid - 0.05);
+      const prevAccent = prev.querySelector<HTMLElement>('[data-story-accent]');
+
+      tl.to(
+        prev,
+        { opacity: 0, y: -32, duration: segmentSize * 0.2, ease: 'power1.in' },
+        mid - 0.05
+      );
+
+      if (prevAccent) {
+        tl.to(
+          prevAccent,
+          { scaleY: 0, duration: segmentSize * 0.15, ease: 'power1.in', transformOrigin: 'bottom' },
+          mid - 0.05
+        );
+      }
+    }
+
+    // Exit current block before next one arrives (if not last)
+    if (i < blocks.length - 1) {
+      const nextAccent = blocks[i + 1]?.querySelector<HTMLElement>('[data-story-accent]');
+
+      tl.to(
+        block,
+        { opacity: 0, y: -32, duration: segmentSize * 0.2, ease: 'power1.in' },
+        exit
+      );
+
+      if (accent && !nextAccent) {
+        // fallback: also hide accent on exit if next block has no accent
+        tl.to(
+          accent,
+          { scaleY: 0, duration: segmentSize * 0.15, ease: 'power1.in', transformOrigin: 'bottom' },
+          exit
+        );
+      }
     }
   });
 }
