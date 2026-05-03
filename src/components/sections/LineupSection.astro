@@ -1,83 +1,154 @@
 ---
+import { Image } from 'astro:assets';
 import { products } from '../../data/products';
 import { useTranslations, isLocale } from '../../i18n/utils';
-import ProductCard from '../ui/ProductCard.astro';
 
 const locale = isLocale(Astro.currentLocale) ? Astro.currentLocale : 'es';
 const t = useTranslations(locale);
+
+function toFullResUrl(url: string): string {
+  const base = url.split('?')[0];
+  return `${base}?w=800&h=1100&fit=crop&q=85`;
+}
 ---
+
+<style>
+  @media (min-width: 1024px) {
+    [data-lineup-text] {
+      padding-top: 0 !important;
+    }
+    [data-lineup-mobile-img] {
+      display: none !important;
+    }
+  }
+</style>
 
 <section
   data-lineup-section
-  class="min-h-screen flex flex-col justify-center py-16 lg:py-0"
-  style="background: var(--nox-bg); overflow: hidden;"
+  style="background: var(--nox-bg);"
 >
-  <!-- Section heading -->
-  <div class="px-8 lg:px-16 mb-12 lg:mb-16">
-    <p
-      class="text-label mb-4"
-      style="color: var(--nox-accent);"
-    >
-      {t.lineup.subheading}
-    </p>
-    <h2
-      class="text-display-lg"
-      style="color: var(--nox-fg);"
-    >
-      {t.lineup.heading}
-    </h2>
-  </div>
+  {products.map((product) => {
+    const subtitle = product[`subtitle_${locale}` as 'subtitle_es' | 'subtitle_en'];
+    const notes = product[`notes_${locale}` as 'notes_es' | 'notes_en'];
+    const roast = product[`roast_${locale}` as 'roast_es' | 'roast_en'];
+    const imgUrl = toFullResUrl(product.imageUrl);
 
-  <!-- Card track — horizontal on desktop (GSAP), native scroll on mobile -->
-  <div
-    class="px-8 lg:px-16"
-    style="overflow: hidden;"
-  >
-    <ul
-      data-lineup-track
-      class="flex gap-8 lg:gap-10"
-      style="
-        /* Mobile: native horizontal scroll */
-        overflow-x: auto;
-        scroll-snap-type: x mandatory;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
-        padding-bottom: 16px;
-      "
-    >
-      <style>
-        [data-lineup-track]::-webkit-scrollbar {
-          display: none;
-        }
+    return (
+      <div
+        data-lineup-product={product.id}
+        class="h-screen flex items-stretch overflow-hidden"
+        style="position: relative;"
+      >
+        <!-- Left: image with parallax container (desktop only) -->
+        <div class="w-1/2 relative overflow-hidden hidden lg:block">
+          <div data-lineup-img class="absolute inset-0" style="top: -10%; bottom: -10%;">
+            <Image
+              src={imgUrl}
+              alt={`${product.name} — ${subtitle}`}
+              width={800}
+              height={1100}
+              loading="lazy"
+              decoding="async"
+              class="w-full h-full object-cover"
+            />
+          </div>
+          <div
+            class="absolute inset-0"
+            style="background: rgba(26,15,10,0.2);"
+            aria-hidden="true"
+          />
+        </div>
 
-        @media (min-width: 1024px) {
-          [data-lineup-track] {
-            overflow: visible;
-          }
+        <!-- Mobile: image on top (hidden on lg+) -->
+        <div
+          data-lineup-mobile-img
+          style="position: absolute; top: 0; left: 0; right: 0; height: 55vw; overflow: hidden;"
+        >
+          <Image
+            src={imgUrl}
+            alt={`${product.name} — ${subtitle}`}
+            width={800}
+            height={550}
+            loading="lazy"
+            decoding="async"
+            class="w-full h-full object-cover"
+          />
+        </div>
 
-          [data-product-card] {
-            min-width: 280px;
-          }
-        }
+        <!-- Right: product details -->
+        <div
+          class="w-full lg:w-1/2 flex flex-col justify-center px-10 lg:px-16"
+          style="padding-top: calc(55vw + 2rem);"
+          data-lineup-text
+        >
+          <!-- Time label -->
+          <p
+            class="text-label mb-4"
+            style="color: var(--nox-accent); opacity: 0.7;"
+          >
+            {product.time}
+          </p>
 
-        @media (max-width: 1023px) {
-          [data-product-card] {
-            min-width: 80vw;
-          }
-        }
-      </style>
+          <!-- Product name — large display -->
+          <h3
+            style="
+              font-family: var(--font-fraunces), serif;
+              font-size: clamp(56px, 7vw, 100px);
+              line-height: 0.9;
+              letter-spacing: -0.02em;
+              color: var(--nox-fg);
+              margin-bottom: 1rem;
+            "
+          >
+            {product.name}
+          </h3>
 
-      {products.map((product) => (
-        <ProductCard
-          name={product.name}
-          subtitle={product[`subtitle_${locale}` as 'subtitle_es' | 'subtitle_en']}
-          notes={product[`notes_${locale}` as 'notes_es' | 'notes_en']}
-          roast={product[`roast_${locale}` as 'roast_es' | 'roast_en']}
-          price={product.price}
-          time={product.time}
-          imageUrl={product.imageUrl}
-        />
-      ))}
-    </ul>
-  </div>
+          <!-- Subtitle -->
+          <p
+            class="text-label mb-6"
+            style="
+              color: var(--nox-fg);
+              opacity: 0.55;
+              text-transform: none;
+              font-weight: 400;
+              letter-spacing: 0.01em;
+              font-size: clamp(14px, 1.2vw, 18px);
+            "
+          >
+            {subtitle}
+          </p>
+
+          <!-- Flavor notes -->
+          <p
+            class="text-body mb-8"
+            style="color: var(--nox-fg); opacity: 0.45; max-width: 36ch;"
+          >
+            {notes}
+          </p>
+
+          <!-- Roast + price row -->
+          <div class="flex items-baseline gap-8">
+            <p
+              class="text-label"
+              style="
+                color: var(--nox-fg);
+                opacity: 0.35;
+                text-transform: none;
+                font-weight: 400;
+              "
+            >
+              {roast}
+            </p>
+            <p style="
+              font-family: var(--font-fraunces), serif;
+              font-size: clamp(28px, 3vw, 40px);
+              color: var(--nox-accent);
+            ">
+              {product.price}
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  })}
 </section>

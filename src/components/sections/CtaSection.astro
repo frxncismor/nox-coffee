@@ -15,10 +15,19 @@ const t = useTranslations(locale);
   <div class="text-center max-w-3xl w-full">
     <!-- Main CTA headline -->
     <h2
-      class="cta-headline text-display-lg mb-8"
-      style="color: var(--nox-fg);"
+      class="cta-headline"
+      style="
+        font-family: var(--font-fraunces), serif;
+        font-size: clamp(80px, 14vw, 200px);
+        font-optical-sizing: auto;
+        line-height: 0.9;
+        letter-spacing: -0.03em;
+        color: var(--nox-fg);
+        margin-bottom: 2rem;
+      "
+      aria-label={t.cta.heading}
     >
-      {t.cta.heading}
+      <span>{t.cta.heading.replace(/\.$/, '')}</span><span style="color: var(--nox-accent);" aria-hidden="true">.</span>
     </h2>
 
     <!-- Sub-headline -->

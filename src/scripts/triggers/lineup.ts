@@ -7,79 +7,51 @@ interface Opts {
 }
 
 export function initLineup({ desktop, reducedMotion }: Opts): void {
+  if (!desktop) return;
+
+  const products = document.querySelectorAll<HTMLElement>('[data-lineup-product]');
+
   if (reducedMotion) {
-    const track = document.querySelector<HTMLElement>('[data-lineup-track]');
-    const cards = track?.querySelectorAll<HTMLElement>('[data-product-card]') ?? [];
-    cards.forEach((card) => {
-      gsap.set(card, { scale: 1, opacity: 1 });
+    products.forEach((p) => {
+      const text = p.querySelector<HTMLElement>('[data-lineup-text]');
+      if (text) gsap.set(text, { opacity: 1, x: 0 });
     });
     return;
   }
 
-  // Mobile: no-op — CSS handles native horizontal scroll
-  if (!desktop) return;
+  products.forEach((product) => {
+    const img = product.querySelector<HTMLElement>('[data-lineup-img]');
+    const text = product.querySelector<HTMLElement>('[data-lineup-text]');
 
-  const section = document.querySelector<HTMLElement>('[data-lineup-section]');
-  const track = document.querySelector<HTMLElement>('[data-lineup-track]');
-
-  if (!section || !track) return;
-
-  const cards = track.querySelectorAll<HTMLElement>('[data-product-card]');
-
-  // Start cards at reduced scale and opacity — containerAnimation handles reveal
-  gsap.set(cards, { scale: 0.88, opacity: 0.4 });
-
-  const tl = gsap.timeline({
-    scrollTrigger: {
-      id: 'lineupScroll',
-      trigger: section,
-      start: 'top top',
-      end: () => `+=${track.scrollWidth - window.innerWidth + 80}`,
-      pin: true,
-      scrub: 1,
-      anticipatePin: 1,
-      invalidateOnRefresh: true,
-    },
-  });
-
-  // Translate the entire track
-  tl.to(track, { x: -(track.scrollWidth - window.innerWidth + 80), ease: 'none', duration: 1 });
-
-  // Individual card reveal via containerAnimation
-  cards.forEach((card) => {
-    gsap.fromTo(
-      card,
-      { scale: 0.88, opacity: 0.4 },
-      {
-        scale: 1,
-        opacity: 1,
-        ease: 'power2.out',
+    if (img) {
+      gsap.to(img, {
+        yPercent: -12,
+        ease: 'none',
         scrollTrigger: {
-          trigger: card,
-          containerAnimation: ScrollTrigger.getById('lineupScroll'),
-          start: 'left center',
-          end: 'center center',
-          scrub: 1,
+          trigger: product,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: true,
         },
-      }
-    );
-  });
+      });
+    }
 
-  // Section heading scales down as horizontal scroll progresses
-  gsap.to('[data-lineup-section] h2, [data-lineup-section] p', {
-    scale: 0.7,
-    opacity: 0.3,
-    ease: 'none',
-    scrollTrigger: {
-      trigger: section,
-      start: 'top top',
-      end: () => `+=${track.scrollWidth - window.innerWidth + 80}`,
-      scrub: 1,
-    },
-  });
-
-  // Recalculate after images load — dimensions may change
-  window.addEventListener('load', () => {
-    ScrollTrigger.refresh();
+    if (text) {
+      gsap.fromTo(
+        text,
+        { opacity: 0, x: 30 },
+        {
+          opacity: 1,
+          x: 0,
+          duration: 0.8,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: product,
+            start: 'top 65%',
+            toggleActions: 'play none none reverse',
+          },
+        }
+      );
+    }
   });
 }

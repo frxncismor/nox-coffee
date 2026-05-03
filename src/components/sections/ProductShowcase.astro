@@ -2,81 +2,150 @@
 import { Image } from 'astro:assets';
 import { useTranslations, isLocale } from '../../i18n/utils';
 
-interface Props {
-  bagImageUrl?: string;
-  bagImageAlt?: string;
-}
-
-const {
-  bagImageUrl = 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=600&h=900&fit=crop&q=85',
-  bagImageAlt = 'Nox Coffee bag — single-origin specialty roast',
-} = Astro.props;
-
 const locale = isLocale(Astro.currentLocale) ? Astro.currentLocale : 'es';
 const t = useTranslations(locale);
 
 const panels = [
-  { id: 'origin', label: t.showcase.origin.label, body: t.showcase.origin.body },
-  { id: 'roast', label: t.showcase.roast.label, body: t.showcase.roast.body },
-  { id: 'ritual', label: t.showcase.ritual.label, body: t.showcase.ritual.body },
+  {
+    id: 'origin',
+    index: '01',
+    label: t.showcase.origin.label,
+    body: t.showcase.origin.body,
+    imageUrl: 'https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=1400&h=900&fit=crop&q=85',
+    imageAlt: 'Coffee cherries at origin farm',
+  },
+  {
+    id: 'roast',
+    index: '02',
+    label: t.showcase.roast.label,
+    body: t.showcase.roast.body,
+    imageUrl: 'https://images.unsplash.com/photo-1559525839-e4a7db06bac5?w=1400&h=900&fit=crop&q=85',
+    imageAlt: 'Coffee beans during roasting process',
+  },
+  {
+    id: 'ritual',
+    index: '03',
+    label: t.showcase.ritual.label,
+    body: t.showcase.ritual.body,
+    imageUrl: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1400&h=900&fit=crop&q=85',
+    imageAlt: 'Brewing ritual — coffee cup at night',
+  },
 ] as const;
 ---
 
 <section
   data-showcase-section
-  class="min-h-screen"
+  class="min-h-screen relative"
   style="background: var(--nox-bg);"
 >
-  <!-- Desktop: two-column grid — bag left, panels right -->
-  <!-- Mobile: stacked vertically -->
-  <div
-    class="
-      min-h-screen
-      flex flex-col
-      lg:grid lg:grid-cols-[40%_60%]
-      lg:items-center
-    "
-  >
-    <!-- Coffee bag image -->
-    <div
-      class="
-        flex items-center justify-center
-        py-16 px-8 lg:py-0
-        lg:h-full
-      "
-    >
-      <div style="will-change: transform;" class="w-full max-w-sm" data-showcase-bag>
-        <Image
-          src={bagImageUrl}
-          alt={bagImageAlt}
-          width={600}
-          height={900}
-          loading="lazy"
-          decoding="async"
-          class="w-full h-auto object-contain drop-shadow-2xl"
-        />
-      </div>
-    </div>
+  <!-- Desktop: sticky two-column split layout -->
+  <div class="hidden lg:block" style="position: sticky; top: 0; height: 100vh; overflow: hidden;">
+    <div style="display: grid; grid-template-columns: 50% 50%; height: 100%;">
 
-    <!-- Panels container -->
-    <div
-      class="
-        relative
-        flex flex-col lg:block
-        px-8 lg:px-16 py-16 lg:py-0
-        lg:h-screen lg:flex lg:items-center
-      "
-    >
-      {panels.map((panel, index) => (
-        <div
-          data-panel={panel.id}
-          class={`
-            lg:absolute lg:inset-x-0 lg:px-16 lg:flex lg:flex-col lg:justify-center lg:h-full
-            mb-16 lg:mb-0
-          `}
-          style={index === 0 ? '' : 'opacity: 0;'}
-        >
-          <!-- Numeric index label -->
+      <!-- Left column: stacked images (crossfade) -->
+      <div style="position: relative; overflow: hidden;">
+        {panels.map((panel, index) => (
+          <div
+            data-showcase-img={panel.id}
+            style={`position: absolute; inset: 0; opacity: ${index === 0 ? 1 : 0};`}
+          >
+            <Image
+              src={panel.imageUrl}
+              alt={panel.imageAlt}
+              width={700}
+              height={900}
+              loading={index === 0 ? 'eager' : 'lazy'}
+              decoding="async"
+              class="w-full h-full object-cover"
+            />
+            <!-- Dark overlay to preserve text contrast on right side -->
+            <div
+              style="position: absolute; inset: 0; background: rgba(26,15,10,0.25);"
+              aria-hidden="true"
+            />
+          </div>
+        ))}
+      </div>
+
+      <!-- Right column: stacked text panels (crossfade) -->
+      <div style="position: relative;">
+        {panels.map((panel, index) => (
+          <div
+            data-panel={panel.id}
+            style={`
+              position: absolute;
+              inset: 0;
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              padding: 0 4rem;
+              opacity: ${index === 0 ? 1 : 0};
+            `}
+          >
+            <!-- Numeric marker -->
+            <span style="
+              font-family: var(--font-inter), monospace;
+              font-size: 10px;
+              letter-spacing: 0.2em;
+              color: var(--nox-accent);
+              opacity: 0.5;
+              display: block;
+              margin-bottom: 1rem;
+            ">
+              {panel.index}
+            </span>
+
+            <!-- Label -->
+            <p
+              class="text-label mb-6"
+              style="color: var(--nox-accent); font-variant: small-caps;"
+            >
+              {panel.label}
+            </p>
+
+            <!-- Body copy -->
+            <div
+              class="text-body max-w-xl"
+              style="color: var(--nox-fg); opacity: 0.85;"
+            >
+              {panel.body.split('\n').map((line) => (
+                <p style="margin-bottom: 0.75em;">{line}</p>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Spacer that drives the pin scroll distance (3 viewports) -->
+  <div class="hidden lg:block" style="height: 300vh;" aria-hidden="true" />
+
+  <!-- Mobile: stacked panels (image + text), all visible, no GSAP -->
+  <div class="lg:hidden">
+    {panels.map((panel) => (
+      <div style="padding: 0 0 4rem;">
+        <!-- Image -->
+        <div style="position: relative; width: 100%; overflow: hidden;">
+          <Image
+            src={panel.imageUrl}
+            alt={panel.imageAlt}
+            width={800}
+            height={500}
+            loading="lazy"
+            decoding="async"
+            class="w-full object-cover"
+            style="height: 60vw; max-height: 420px;"
+          />
+          <div
+            style="position: absolute; inset: 0; background: rgba(26,15,10,0.25);"
+            aria-hidden="true"
+          />
+        </div>
+
+        <!-- Text -->
+        <div style="padding: 2rem 2rem 0;">
           <span style="
             font-family: var(--font-inter), monospace;
             font-size: 10px;
@@ -85,19 +154,17 @@ const panels = [
             opacity: 0.5;
             display: block;
             margin-bottom: 1rem;
-          ">0{index + 1}</span>
-
-          <!-- Panel label — small caps, gold accent -->
+          ">
+            {panel.index}
+          </span>
           <p
-            class="text-label mb-6"
+            class="text-label mb-4"
             style="color: var(--nox-accent); font-variant: small-caps;"
           >
             {panel.label}
           </p>
-
-          <!-- Panel body — \n converted to line breaks -->
           <div
-            class="text-body max-w-xl"
+            class="text-body"
             style="color: var(--nox-fg); opacity: 0.85;"
           >
             {panel.body.split('\n').map((line) => (
@@ -105,7 +172,7 @@ const panels = [
             ))}
           </div>
         </div>
-      ))}
-    </div>
+      </div>
+    ))}
   </div>
 </section>
