@@ -1,0 +1,99 @@
+---
+import { Image } from 'astro:assets';
+import { showcasePanels } from '../../content/copy';
+
+interface Props {
+  bagImageUrl?: string;
+  bagImageAlt?: string;
+}
+
+const {
+  bagImageUrl = 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=600&h=900&fit=crop&q=85',
+  bagImageAlt = 'Nox Coffee bag — single-origin specialty roast',
+} = Astro.props;
+---
+
+<section
+  data-section="product"
+  class="min-h-screen"
+  style="background: var(--nox-bg);"
+>
+  <!-- Desktop: two-column grid — bag left, panels right -->
+  <!-- Mobile: stacked vertically -->
+  <div
+    class="
+      min-h-screen
+      flex flex-col
+      lg:grid lg:grid-cols-[40%_60%]
+      lg:items-center
+    "
+  >
+    <!-- Coffee bag image -->
+    <div
+      class="
+        flex items-center justify-center
+        py-16 px-8 lg:py-0
+        lg:sticky lg:top-0 lg:h-screen
+      "
+    >
+      <div style="will-change: transform;" class="w-full max-w-sm">
+        <Image
+          src={bagImageUrl}
+          alt={bagImageAlt}
+          width={600}
+          height={900}
+          loading="lazy"
+          decoding="async"
+          data-bag
+          class="w-full h-auto object-contain drop-shadow-2xl"
+        />
+      </div>
+    </div>
+
+    <!-- Panels container -->
+    <div
+      class="
+        relative
+        flex flex-col lg:block
+        px-8 lg:px-16 py-16 lg:py-0
+        lg:h-screen lg:flex lg:items-center
+      "
+    >
+      {showcasePanels.map((panel, index) => (
+        <div
+          data-panel={panel.id}
+          class={`
+            lg:absolute lg:inset-x-0 lg:px-16 lg:flex lg:flex-col lg:justify-center lg:h-full
+            mb-16 lg:mb-0
+            ${index === 0 ? '' : 'lg:opacity-0'}
+          `}
+          style={index === 0 ? '' : 'opacity: 0;'}
+        >
+          <!-- Panel label -->
+          <p
+            class="text-label mb-4"
+            style="color: var(--nox-accent);"
+          >
+            {panel.label}
+          </p>
+
+          <!-- Panel heading -->
+          <h2
+            class="text-display-md mb-8"
+            style="color: var(--nox-fg);"
+          >
+            {panel.title}
+          </h2>
+
+          <!-- Panel body -->
+          <p
+            class="text-body max-w-xl"
+            style="color: var(--nox-fg); opacity: 0.8;"
+          >
+            {panel.body}
+          </p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

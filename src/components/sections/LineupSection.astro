@@ -1,0 +1,71 @@
+---
+import { products } from '../../data/products';
+import ProductCard from '../ui/ProductCard.astro';
+---
+
+<section
+  data-section="lineup"
+  class="min-h-screen flex flex-col justify-center py-16 lg:py-0"
+  style="background: var(--nox-bg); overflow: hidden;"
+>
+  <!-- Section heading -->
+  <div class="px-8 lg:px-16 mb-12 lg:mb-16">
+    <p
+      class="text-label mb-4"
+      style="color: var(--nox-accent);"
+    >
+      Collection
+    </p>
+    <h2
+      class="text-display-lg"
+      style="color: var(--nox-fg);"
+    >
+      The Lineup
+    </h2>
+  </div>
+
+  <!-- Card track — horizontal on desktop (GSAP), native scroll on mobile -->
+  <div
+    class="px-8 lg:px-16"
+    style="overflow: hidden;"
+  >
+    <ul
+      data-lineup-track
+      class="flex gap-8 lg:gap-10"
+      style="
+        /* Mobile: native horizontal scroll */
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding-bottom: 16px;
+      "
+    >
+      <style>
+        [data-lineup-track]::-webkit-scrollbar {
+          display: none;
+        }
+
+        @media (min-width: 1024px) {
+          [data-lineup-track] {
+            overflow: visible;
+          }
+
+          [data-card] {
+            min-width: 280px;
+          }
+        }
+
+        @media (max-width: 1023px) {
+          [data-card] {
+            min-width: 80vw;
+          }
+        }
+      </style>
+
+      {products.map((product) => (
+        <ProductCard product={product} />
+      ))}
+    </ul>
+  </div>
+</section>

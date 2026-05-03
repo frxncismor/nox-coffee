@@ -1,0 +1,156 @@
+@import "tailwindcss";
+@import './tokens.css';
+
+/* Tailwind v4 theme configuration */
+@theme {
+  --color-nox-bg: #1A0F0A;
+  --color-nox-fg: #F5E6D3;
+  --color-nox-accent: #D4A574;
+  --color-nox-muted: #3D2817;
+  --font-display: var(--font-fraunces), serif;
+  --font-body: var(--font-inter), system-ui, sans-serif;
+}
+
+/* ============================================
+   Typography scale utilities
+   ============================================ */
+
+.text-display-xl {
+  font-family: var(--font-fraunces), serif;
+  font-size: clamp(96px, 15vw, 180px);
+  font-variation-settings: 'opsz' 96;
+  line-height: 0.9;
+}
+
+.text-display-lg {
+  font-family: var(--font-fraunces), serif;
+  font-size: clamp(48px, 8vw, 96px);
+  font-variation-settings: 'opsz' 72;
+  line-height: 0.95;
+}
+
+.text-display-md {
+  font-family: var(--font-fraunces), serif;
+  font-size: clamp(28px, 5vw, 64px);
+  font-variation-settings: 'opsz' 48;
+  line-height: 1.05;
+}
+
+.text-body {
+  font-family: var(--font-inter), system-ui, sans-serif;
+  font-weight: 400;
+  font-size: clamp(16px, 1.5vw, 18px);
+  line-height: 1.7;
+}
+
+.text-label {
+  font-family: var(--font-inter), system-ui, sans-serif;
+  font-weight: 600;
+  font-size: clamp(12px, 1vw, 14px);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ============================================
+   Film grain overlay
+   ============================================ */
+
+.film-grain {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: overlay;
+  opacity: var(--nox-grain-opacity);
+  will-change: transform;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/></svg>");
+  animation: grain-shift 0.8s steps(8) infinite;
+}
+
+@keyframes grain-shift {
+  0%   { transform: translate(0, 0); }
+  20%  { transform: translate(-2%, -3%); }
+  40%  { transform: translate(3%, 1%); }
+  60%  { transform: translate(-1%, 2%); }
+  80%  { transform: translate(2%, -2%); }
+  100% { transform: translate(0, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .film-grain {
+    animation: none;
+  }
+}
+
+/* ============================================
+   Scroll progress bar
+   ============================================ */
+
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--nox-progress-height);
+  background: var(--nox-accent);
+  z-index: 9998;
+  transform-origin: left center;
+  transform: scaleX(0);
+  will-change: transform;
+}
+
+/* ============================================
+   Custom cursor
+   ============================================ */
+
+.custom-cursor {
+  position: fixed;
+  width: 12px;
+  height: 12px;
+  border-radius: 9999px;
+  background: var(--nox-fg);
+  pointer-events: none;
+  z-index: 9997;
+  mix-blend-mode: difference;
+  top: 0;
+  left: 0;
+  transition: width 0.2s ease, height 0.2s ease, margin 0.2s ease;
+}
+
+.custom-cursor.is-hovering {
+  width: 24px;
+  height: 24px;
+  margin-top: -6px;
+  margin-left: -6px;
+}
+
+/* ============================================
+   Screen reader utility
+   ============================================ */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* ============================================
+   Mobile: animation overrides
+   ============================================ */
+
+@media (max-width: 1023px) {
+  [data-word] {
+    opacity: 1 !important;
+  }
+
+  [data-panel] {
+    position: static !important;
+    opacity: 1 !important;
+  }
+}

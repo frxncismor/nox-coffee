@@ -1,0 +1,71 @@
+---
+import { Image } from 'astro:assets';
+import { heroCopy } from '../../content/copy';
+
+const chars = heroCopy.headline.split('');
+const heroImageUrl = 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1920&h=1080&fit=crop&q=85';
+---
+
+<section
+  data-section="hero"
+  class="relative overflow-hidden"
+  style="height: 100svh;"
+  aria-label="Hero"
+>
+  <!-- Background image with parallax target -->
+  <div
+    data-parallax
+    class="absolute inset-0"
+    style="will-change: transform;"
+  >
+    <Image
+      src={heroImageUrl}
+      alt="Dark moody coffee atmosphere — the hours that matter"
+      width={1920}
+      height={1080}
+      loading="eager"
+      fetchpriority="high"
+      decoding="async"
+      class="w-full h-full object-cover"
+      style="transform: scale(1.1);"
+    />
+  </div>
+
+  <!-- Dark gradient overlay -->
+  <div
+    class="absolute inset-0"
+    style="background: linear-gradient(to bottom, rgba(26,15,10,0.7) 0%, transparent 40%, rgba(26,15,10,0.9) 100%);"
+    aria-hidden="true"
+  ></div>
+
+  <!-- Hero content -->
+  <div class="relative z-10 flex flex-col items-center justify-center h-full text-center px-6">
+    <!-- NOX headline — each char wrapped for JS animation -->
+    <h1
+      class="text-display-xl"
+      style="color: var(--nox-fg); letter-spacing: -0.04em; line-height: 0.85;"
+      aria-label={heroCopy.headline}
+    >
+      {chars.map((char) => (
+        <span data-char class="inline-block" aria-hidden="true">{char}</span>
+      ))}
+    </h1>
+
+    <!-- Tagline -->
+    <p
+      class="hero-tagline mt-6"
+      style="font-family: var(--font-inter), sans-serif; font-weight: 400; font-size: clamp(16px, 2vw, 24px); color: var(--nox-accent); opacity: 0;"
+    >
+      {heroCopy.tagline}
+    </p>
+
+    <!-- Scroll indicator -->
+    <div
+      class="scroll-indicator absolute bottom-8"
+      aria-hidden="true"
+      style="color: var(--nox-fg); opacity: 0.5;"
+    >
+      <p class="text-label" style="letter-spacing: 0.2em;">↓ {heroCopy.scrollIndicator}</p>
+    </div>
+  </div>
+</section>

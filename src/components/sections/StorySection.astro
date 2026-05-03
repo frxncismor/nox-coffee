@@ -1,0 +1,42 @@
+---
+import { storyCopy } from '../../content/copy';
+
+const words = storyCopy.split(' ');
+---
+
+<section
+  data-section="story"
+  class="min-h-screen flex flex-col items-center justify-center px-6 py-32"
+  aria-label={storyCopy}
+>
+  <div class="max-w-3xl w-full">
+    <!-- Eyebrow label -->
+    <p
+      class="text-label mb-10"
+      style="color: var(--nox-accent);"
+      aria-hidden="true"
+    >
+      The Story
+    </p>
+
+    <!-- Visual layer: word-by-word animation target -->
+    <p
+      class="text-display-md leading-relaxed"
+      style="color: var(--nox-fg);"
+      aria-hidden="true"
+    >
+      {words.map((word) => (
+        <span
+          data-word
+          class="inline"
+          style="opacity: 0.15; transition: opacity 0.3s ease;"
+        >
+          {word}{' '}
+        </span>
+      ))}
+    </p>
+
+    <!-- Screen reader accessible version of the full text -->
+    <p class="sr-only">{storyCopy}</p>
+  </div>
+</section>

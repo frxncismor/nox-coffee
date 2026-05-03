@@ -1,0 +1,52 @@
+:root {
+  --nox-bg: #1A0F0A;
+  --nox-fg: #F5E6D3;
+  --nox-accent: #D4A574;
+  --nox-muted: #3D2817;
+  --nox-grain-opacity: 0.06;
+  --nox-progress-height: 2px;
+  --font-fraunces: 'Fraunces';
+  --font-inter: 'Inter';
+}
+
+@font-face {
+  font-family: 'Fraunces';
+  src: url('/fonts/Fraunces[opsz,wght].woff2') format('woff2-variations');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/Inter-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/Inter-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+html {
+  color-scheme: dark;
+  background: var(--nox-bg);
+  color: var(--nox-fg);
+}
+
+body {
+  font-family: var(--font-inter), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Hide native cursor on fine-pointer (non-touch) devices only */
+@media (hover: hover) and (pointer: fine) {
+  body {
+    cursor: none;
+  }
+}

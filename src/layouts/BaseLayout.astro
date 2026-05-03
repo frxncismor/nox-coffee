@@ -1,0 +1,66 @@
+---
+import '../styles/global.css';
+import SeoHead from '../components/ui/SeoHead.astro';
+import ScrollProgress from '../components/ui/ScrollProgress.astro';
+import FilmGrain from '../components/ui/FilmGrain.astro';
+import CustomCursor from '../components/islands/CustomCursor';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Font preloads — must come before stylesheet to avoid FOUT -->
+    <link
+      rel="preload"
+      href="/fonts/Fraunces[opsz,wght].woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/Inter-Regular.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/Inter-SemiBold.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <SeoHead title={title} description={description} />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+  </head>
+  <body>
+    <!-- Scroll progress bar — fixed top, accent colored -->
+    <ScrollProgress />
+    <!-- Film grain overlay — fixed, CSS-only texture -->
+    <FilmGrain />
+    <!-- Custom cursor — React island, desktop only -->
+    <CustomCursor client:only="react" />
+
+    <slot />
+
+    <!-- Global animation boot — Astro bundles this module script -->
+    <script>
+      import { bootNox } from '../scripts/animations';
+      bootNox();
+    </script>
+  </body>
+</html>
