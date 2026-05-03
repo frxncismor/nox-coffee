@@ -1,8 +1,11 @@
 ---
 import { Image } from 'astro:assets';
-import { copy } from '../../content/copy';
+import { useTranslations, isLocale } from '../../i18n/utils';
 
-const chars = copy.hero.brand.split('');
+const locale = isLocale(Astro.currentLocale) ? Astro.currentLocale : 'es';
+const t = useTranslations(locale);
+
+const chars = t.hero.brand.split('');
 const heroImageUrl = 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1920&h=1080&fit=crop&q=85';
 ---
 
@@ -44,7 +47,7 @@ const heroImageUrl = 'https://images.unsplash.com/photo-1495474472287-4d71bcdd20
     <h1
       class="text-display-xl"
       style="color: var(--nox-fg); letter-spacing: -0.04em; line-height: 0.85;"
-      aria-label={copy.hero.brand}
+      aria-label={t.hero.brand}
     >
       {chars.map((char) => (
         <span data-hero-char class="inline-block" aria-hidden="true" style="opacity: 0;">{char}</span>
@@ -56,7 +59,7 @@ const heroImageUrl = 'https://images.unsplash.com/photo-1495474472287-4d71bcdd20
       data-hero-tagline
       style="font-family: var(--font-inter), sans-serif; font-weight: 400; font-size: clamp(16px, 2vw, 24px); color: var(--nox-accent); opacity: 0; margin-top: 1.5rem;"
     >
-      {copy.hero.tagline}
+      {t.hero.tagline}
     </p>
 
     <!-- Scroll cue — whispered, no arrows -->
@@ -66,7 +69,7 @@ const heroImageUrl = 'https://images.unsplash.com/photo-1495474472287-4d71bcdd20
       aria-hidden="true"
       style="color: var(--nox-fg); opacity: 0.4;"
     >
-      <p class="text-label" style="letter-spacing: 0.2em; text-transform: lowercase;">{copy.hero.scrollCue}</p>
+      <p class="text-label" style="letter-spacing: 0.2em; text-transform: lowercase;">{t.hero.scrollCue}</p>
     </div>
   </div>
 </section>

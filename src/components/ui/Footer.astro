@@ -1,5 +1,7 @@
 ---
-import { footerCopy } from '../../content/copy';
+const brand = 'Nox Coffee';
+const unsplashUrl = 'https://unsplash.com';
+const photoCredit = 'Fotos de Unsplash';
 ---
 
 <footer
@@ -7,16 +9,16 @@ import { footerCopy } from '../../content/copy';
   style="color: var(--nox-muted); font-family: var(--font-inter), system-ui, sans-serif; font-size: 12px;"
 >
   <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-    <p>&copy; {new Date().getFullYear()} {footerCopy.brand}</p>
+    <p>&copy; {new Date().getFullYear()} {brand}</p>
     <div class="flex flex-col sm:flex-row gap-2 sm:gap-6">
       <a
-        href={footerCopy.unsplashUrl}
+        href={unsplashUrl}
         target="_blank"
         rel="noopener noreferrer"
         style="color: var(--nox-muted); text-decoration: none;"
         class="hover:opacity-70 transition-opacity"
       >
-        {footerCopy.photoCredit}
+        {photoCredit}
       </a>
       <span class="hidden sm:inline" aria-hidden="true">·</span>
       <a

@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import { copy } from '../../content/copy';
+import { useTranslations, isLocale } from '../../i18n/utils';
 
 interface Props {
   bagImageUrl?: string;
@@ -12,10 +12,13 @@ const {
   bagImageAlt = 'Nox Coffee bag — single-origin specialty roast',
 } = Astro.props;
 
+const locale = isLocale(Astro.currentLocale) ? Astro.currentLocale : 'es';
+const t = useTranslations(locale);
+
 const panels = [
-  { id: 'origin', label: copy.showcase.origin.label, body: copy.showcase.origin.body },
-  { id: 'roast', label: copy.showcase.roast.label, body: copy.showcase.roast.body },
-  { id: 'ritual', label: copy.showcase.ritual.label, body: copy.showcase.ritual.body },
+  { id: 'origin', label: t.showcase.origin.label, body: t.showcase.origin.body },
+  { id: 'roast', label: t.showcase.roast.label, body: t.showcase.roast.body },
+  { id: 'ritual', label: t.showcase.ritual.label, body: t.showcase.ritual.body },
 ] as const;
 ---
 

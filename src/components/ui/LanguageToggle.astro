@@ -1,0 +1,35 @@
+---
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import { isLocale } from '../../i18n/utils';
+
+const currentLocale = isLocale(Astro.currentLocale) ? Astro.currentLocale : 'es';
+const targetLocale = currentLocale === 'es' ? 'en' : 'es';
+const targetLabel = currentLocale === 'es' ? 'EN' : 'ES';
+const targetUrl = getRelativeLocaleUrl(targetLocale, '/');
+---
+
+<a
+  href={targetUrl}
+  class="language-toggle"
+  aria-label={`Switch to ${targetLocale === 'en' ? 'English' : 'Español'}`}
+  style="
+    position: fixed;
+    top: 1.25rem;
+    right: 1.5rem;
+    z-index: 9997;
+    font-family: var(--font-inter), sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    color: var(--nox-fg);
+    opacity: 0.6;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: opacity 0.2s ease;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid rgba(245, 230, 211, 0.2);
+  "
+  onmouseover="this.style.opacity='1'"
+  onmouseout="this.style.opacity='0.6'"
+>
+  {targetLabel}
+</a>

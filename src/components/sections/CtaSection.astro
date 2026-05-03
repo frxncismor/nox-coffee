@@ -1,7 +1,10 @@
 ---
 import MagneticButton from '../islands/MagneticButton';
 import Footer from '../ui/Footer.astro';
-import { copy } from '../../content/copy';
+import { useTranslations, isLocale } from '../../i18n/utils';
+
+const locale = isLocale(Astro.currentLocale) ? Astro.currentLocale : 'es';
+const t = useTranslations(locale);
 ---
 
 <section
@@ -15,7 +18,7 @@ import { copy } from '../../content/copy';
       class="cta-headline text-display-lg mb-8"
       style="color: var(--nox-fg);"
     >
-      {copy.cta.heading}
+      {t.cta.heading}
     </h2>
 
     <!-- Sub-headline -->
@@ -23,13 +26,13 @@ import { copy } from '../../content/copy';
       class="cta-subhead text-body mb-16 max-w-md mx-auto"
       style="color: var(--nox-fg); opacity: 0.7;"
     >
-      {copy.cta.subtext}
+      {t.cta.subtext}
     </p>
 
     <!-- Magnetic button — React island -->
     <MagneticButton
       client:only="react"
-      label={copy.cta.button}
+      label={t.cta.button}
       href="#"
     />
 
@@ -38,7 +41,7 @@ import { copy } from '../../content/copy';
       class="mt-8 text-label"
       style="color: var(--nox-fg); opacity: 0.35; text-transform: none; letter-spacing: 0.02em; font-weight: 400; font-size: 12px;"
     >
-      {copy.cta.shipping}
+      {t.cta.shipping}
     </p>
   </div>
 </section>

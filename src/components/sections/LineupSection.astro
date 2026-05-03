@@ -1,7 +1,10 @@
 ---
 import { products } from '../../data/products';
-import { copy } from '../../content/copy';
+import { useTranslations, isLocale } from '../../i18n/utils';
 import ProductCard from '../ui/ProductCard.astro';
+
+const locale = isLocale(Astro.currentLocale) ? Astro.currentLocale : 'es';
+const t = useTranslations(locale);
 ---
 
 <section
@@ -15,13 +18,13 @@ import ProductCard from '../ui/ProductCard.astro';
       class="text-label mb-4"
       style="color: var(--nox-accent);"
     >
-      {copy.lineup.subheading}
+      {t.lineup.subheading}
     </p>
     <h2
       class="text-display-lg"
       style="color: var(--nox-fg);"
     >
-      {copy.lineup.heading}
+      {t.lineup.heading}
     </h2>
   </div>
 
@@ -65,7 +68,15 @@ import ProductCard from '../ui/ProductCard.astro';
       </style>
 
       {products.map((product) => (
-        <ProductCard product={product} />
+        <ProductCard
+          name={product.name}
+          subtitle={product[`subtitle_${locale}` as 'subtitle_es' | 'subtitle_en']}
+          notes={product[`notes_${locale}` as 'notes_es' | 'notes_en']}
+          roast={product[`roast_${locale}` as 'roast_es' | 'roast_en']}
+          price={product.price}
+          time={product.time}
+          imageUrl={product.imageUrl}
+        />
       ))}
     </ul>
   </div>

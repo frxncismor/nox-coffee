@@ -1,7 +1,10 @@
 ---
-import { copy } from '../../content/copy';
+import { useTranslations, isLocale } from '../../i18n/utils';
 
-const allText = copy.story.blocks.map((b) => b.text.replace(/\n/g, ' ')).join(' ');
+const locale = isLocale(Astro.currentLocale) ? Astro.currentLocale : 'es';
+const t = useTranslations(locale);
+
+const allText = t.story.blocks.map((b) => b.replace(/\n/g, ' ')).join(' ');
 ---
 
 <section
@@ -10,14 +13,14 @@ const allText = copy.story.blocks.map((b) => b.text.replace(/\n/g, ' ')).join(' 
   aria-label={allText}
 >
   <div class="max-w-3xl w-full relative lg:h-full">
-    {copy.story.blocks.map((block, blockIndex) => (
+    {t.story.blocks.map((text, blockIndex) => (
       <div
         data-story-block
         class="lg:absolute lg:inset-0 lg:flex lg:flex-col lg:justify-center mb-16 lg:mb-0"
         aria-hidden="true"
         style={`opacity: ${blockIndex === 0 ? 1 : 0};`}
       >
-        {block.text.split('\n').map((line) => (
+        {text.split('\n').map((line) => (
           <p
             class="text-display-md leading-relaxed"
             style="color: var(--nox-fg);"
