@@ -8,28 +8,44 @@ const targetLabel = currentLocale === 'es' ? 'EN' : 'ES';
 const targetUrl = getRelativeLocaleUrl(targetLocale, '/');
 ---
 
-<a
-  href={targetUrl}
-  class="language-toggle"
-  aria-label={`Switch to ${targetLocale === 'en' ? 'English' : 'Español'}`}
-  style="
-    position: fixed;
-    top: 1.25rem;
-    right: 1.5rem;
-    z-index: 9997;
+<style>
+  .language-toggle {
     font-family: var(--font-inter), sans-serif;
     font-size: 0.75rem;
     letter-spacing: 0.12em;
     color: var(--nox-fg);
-    opacity: 0.6;
-    text-decoration: none;
+    opacity: 0.75;
     text-transform: uppercase;
+    text-decoration: none;
+    padding: 0.375rem 0.625rem;
+    border: 1px solid rgba(245, 230, 211, 0.25);
+    background: rgba(26, 15, 10, 0.45);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border-radius: 2px;
     transition: opacity 0.2s ease;
-    padding: 0.25rem 0.5rem;
-    border: 1px solid rgba(245, 230, 211, 0.2);
-  "
-  onmouseover="this.style.opacity='1'"
-  onmouseout="this.style.opacity='0.6'"
+  }
+
+  @media (hover: hover) {
+    .language-toggle:hover {
+      opacity: 1;
+    }
+  }
+
+  @media (max-width: 1023px) {
+    .language-toggle {
+      opacity: 0.9;
+      font-size: 0.8125rem;
+      padding: 0.5rem 0.875rem;
+    }
+  }
+</style>
+
+<a
+  href={targetUrl}
+  class="language-toggle"
+  aria-label={`Switch to ${targetLocale === 'en' ? 'English' : 'Español'}`}
+  style="position: fixed; top: 1.25rem; right: 1.5rem; z-index: 9997;"
 >
   {targetLabel}
 </a>

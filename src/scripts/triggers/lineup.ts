@@ -7,8 +7,6 @@ interface Opts {
 }
 
 export function initLineup({ desktop, reducedMotion }: Opts): void {
-  if (!desktop) return;
-
   const products = document.querySelectorAll<HTMLElement>('[data-lineup-product]');
 
   if (reducedMotion) {
@@ -21,12 +19,36 @@ export function initLineup({ desktop, reducedMotion }: Opts): void {
     return;
   }
 
+  if (!desktop) {
+    products.forEach((product) => {
+      const text = product.querySelector<HTMLElement>('[data-lineup-text]');
+      if (!text) return;
+      const textEls = Array.from(text.children) as HTMLElement[];
+      gsap.fromTo(
+        textEls,
+        { opacity: 0, y: 20 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          ease: 'power2.out',
+          stagger: 0.08,
+          scrollTrigger: {
+            trigger: product,
+            start: 'top 65%',
+            toggleActions: 'play none none none',
+          },
+        }
+      );
+    });
+    return;
+  }
+
   products.forEach((product) => {
     const img = product.querySelector<HTMLElement>('[data-lineup-img]');
     const text = product.querySelector<HTMLElement>('[data-lineup-text]');
     const priceEl = product.querySelector<HTMLElement>('[data-lineup-price]');
 
-    // Image parallax (unchanged)
     if (img) {
       gsap.to(img, {
         yPercent: -12,
@@ -40,7 +62,6 @@ export function initLineup({ desktop, reducedMotion }: Opts): void {
       });
     }
 
-    // Text reveal (scrubbed, reversible) as product scrolls into view
     if (text) {
       const textEls = Array.from(text.children) as HTMLElement[];
       gsap.fromTo(
@@ -61,13 +82,10 @@ export function initLineup({ desktop, reducedMotion }: Opts): void {
       );
     }
 
-    // Price reveal: pin product + scrub price in
     if (priceEl) {
       gsap.set(priceEl, { opacity: 0, y: 12 });
-
       const priceTl = gsap.timeline();
       priceTl.to(priceEl, { opacity: 1, y: 0, ease: 'power2.out' });
-
       ScrollTrigger.create({
         trigger: product,
         start: 'top top',

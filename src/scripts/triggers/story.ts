@@ -28,21 +28,22 @@ export function initStory({ desktop, reducedMotion }: Opts): void {
   }
 
   if (!desktop) {
-    // Mobile: simple IntersectionObserver fade-in per block
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            gsap.to(entry.target, { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' });
-            io.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.3 }
-    );
-    blocks.forEach((b) => {
-      gsap.set(b, { opacity: 0, y: 24 });
-      io.observe(b);
+    blocks.forEach((block) => {
+      gsap.fromTo(
+        block,
+        { opacity: 0, y: 24 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.7,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: block,
+            start: 'top 90%',
+            toggleActions: 'play none none none',
+          },
+        }
+      );
     });
     return;
   }

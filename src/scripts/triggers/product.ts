@@ -21,21 +21,23 @@ export function initProduct({ desktop, reducedMotion }: Opts): void {
   }
 
   if (!desktop) {
-    // Mobile: IO reveal per panel (images and text already visible via CSS)
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            gsap.to(e.target, { opacity: 1, y: 0, duration: 0.7 });
-            io.unobserve(e.target);
-          }
-        });
-      },
-      { threshold: 0.2 }
-    );
-    panels.forEach((p) => {
-      gsap.set(p, { opacity: 0, y: 20 });
-      io.observe(p);
+    const mobilePanels = document.querySelectorAll<HTMLElement>('[data-showcase-mobile-panel]');
+    mobilePanels.forEach((panel) => {
+      gsap.fromTo(
+        panel,
+        { opacity: 0, y: 20 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.7,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: panel,
+            start: 'top 85%',
+            toggleActions: 'play none none none',
+          },
+        }
+      );
     });
     return;
   }
