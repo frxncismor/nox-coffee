@@ -21,6 +21,42 @@ export function initCta({ desktop: _desktop, reducedMotion }: Opts): void {
     return;
   }
 
+  if (!_desktop) {
+    // Mobile: simple fade+y — scale overflows the viewport on small screens
+    gsap.fromTo(
+      '[data-section="cta"] .cta-headline',
+      { opacity: 0, y: 30 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: '[data-section="cta"]',
+          start: 'top 85%',
+          toggleActions: 'play none none none',
+        },
+      }
+    );
+    gsap.fromTo(
+      '[data-section="cta"] .cta-subhead',
+      { opacity: 0, y: 20 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.7,
+        ease: 'power2.out',
+        delay: 0.15,
+        scrollTrigger: {
+          trigger: '[data-section="cta"]',
+          start: 'top 85%',
+          toggleActions: 'play none none none',
+        },
+      }
+    );
+    return;
+  }
+
   gsap.context(() => {
     gsap.fromTo(
       '[data-section="cta"] .cta-headline',

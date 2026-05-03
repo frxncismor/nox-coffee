@@ -155,17 +155,10 @@
 }
 
 /* ============================================
-   Mobile: animation overrides
+   Mobile: layout safety
    ============================================ */
 
-@media (max-width: 1023px) {
-  [data-story-block] {
-    opacity: 1 !important;
-    transform: none !important;
-  }
-
-  [data-panel] {
-    position: static !important;
-    opacity: 1 !important;
-  }
+html,
+body {
+  overflow-x: hidden;
 }
