@@ -14,7 +14,9 @@ export function initLineup({ desktop, reducedMotion }: Opts): void {
   if (reducedMotion) {
     products.forEach((p) => {
       const text = p.querySelector<HTMLElement>('[data-lineup-text]');
+      const priceEl = p.querySelector<HTMLElement>('[data-lineup-price]');
       if (text) gsap.set(text, { opacity: 1, x: 0 });
+      if (priceEl) gsap.set(priceEl, { opacity: 1, y: 0 });
     });
     return;
   }
@@ -22,7 +24,9 @@ export function initLineup({ desktop, reducedMotion }: Opts): void {
   products.forEach((product) => {
     const img = product.querySelector<HTMLElement>('[data-lineup-img]');
     const text = product.querySelector<HTMLElement>('[data-lineup-text]');
+    const priceEl = product.querySelector<HTMLElement>('[data-lineup-price]');
 
+    // Image parallax (unchanged)
     if (img) {
       gsap.to(img, {
         yPercent: -12,
@@ -36,57 +40,42 @@ export function initLineup({ desktop, reducedMotion }: Opts): void {
       });
     }
 
+    // Text reveal (scrubbed, reversible) as product scrolls into view
     if (text) {
+      const textEls = Array.from(text.children) as HTMLElement[];
       gsap.fromTo(
-        text,
-        { opacity: 0, x: 30 },
+        textEls,
+        { opacity: 0, x: 20 },
         {
           opacity: 1,
           x: 0,
-          duration: 0.8,
           ease: 'power2.out',
+          stagger: 0.05,
           scrollTrigger: {
             trigger: product,
-            start: 'top 65%',
-            toggleActions: 'play none none reverse',
+            start: 'top 80%',
+            end: 'top 20%',
+            scrub: 0.5,
           },
         }
       );
     }
 
-    const priceEl = product.querySelector<HTMLElement>('[data-lineup-price]');
+    // Price reveal: pin product + scrub price in
     if (priceEl) {
-      gsap.fromTo(
-        priceEl,
-        { opacity: 0, y: 10 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.5,
-          delay: 0.3,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: product,
-            start: 'top top+=100',
-            toggleActions: 'play none none reverse',
-          },
-        }
-      );
+      gsap.set(priceEl, { opacity: 0, y: 12 });
+
+      const priceTl = gsap.timeline();
+      priceTl.to(priceEl, { opacity: 1, y: 0, ease: 'power2.out' });
+
+      ScrollTrigger.create({
+        trigger: product,
+        start: 'top top',
+        end: '+=180',
+        pin: true,
+        scrub: 1,
+        animation: priceTl,
+      });
     }
   });
-
-  const sectionEl = document.querySelector<HTMLElement>('[data-lineup-section]');
-  if (sectionEl && products.length) {
-    ScrollTrigger.create({
-      trigger: sectionEl,
-      start: 'top top',
-      end: 'bottom bottom',
-      snap: {
-        snapTo: (progress: number) => Math.round(progress * products.length) / products.length,
-        duration: { min: 0.3, max: 0.6 },
-        delay: 0.05,
-        ease: 'power2.inOut',
-      },
-    });
-  }
 }

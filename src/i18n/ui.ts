@@ -19,15 +19,18 @@ export const translations = {
     showcase: {
       origin: {
         label: 'Origen',
-        body: 'Granos de Chiapas y Nariño.\nCosechados a mano. Lavados con agua de manantial. Secados al sol, no en máquinas.\nLlegan a Houston en sacos de yute, no en contenedores genéricos.',
+        tagline: 'El origen importa. La fruta lo demuestra.',
+        body: 'Granos de Chiapas y Nariño. Altitud entre 1,400 y 1,900 metros.\nCosechados a mano, uno por uno. Lavados con agua de manantial. Secados al sol, no en máquinas, no al vapor.\nLlegan a Houston en sacos de yute, no en contenedores genéricos. Cada lote tiene nombre, origen y fecha.',
       },
       roast: {
         label: 'Tueste',
+        tagline: 'Catorce minutos entre el grano y el carácter.',
         body: 'Tueste medio-oscuro. Lento.\nCatorce minutos exactos. Suficiente para sacar el chocolate, no tanto como para perder la fruta.\nCada lote lleva la fecha del día que salió del tostador. Si tarda más de tres semanas en llegarte, no lo enviamos.',
       },
       ritual: {
         label: 'Ritual',
-        body: 'Una taza, no dos. Filtro, no espresso.\nA las 11pm, no a las 7am.\nNo es para despertarte. Es para acompañarte.',
+        tagline: 'El café de las 11pm tiene sus propias reglas.',
+        body: 'Una taza, no dos. Filtro, no espresso. Sin azúcar.\nA las 11pm, no a las 7am. La noche tiene su propio tempo.\nNo es para despertarte. Es para acompañarte en la parte del día que el resto del mundo ya olvidó.',
       },
     },
     lineup: {
@@ -61,15 +64,18 @@ export const translations = {
     showcase: {
       origin: {
         label: 'Origin',
-        body: 'Beans from Chiapas and Nariño.\nHand-harvested. Washed with spring water. Sun-dried, not machine-dried.\nThey arrive in Houston in burlap sacks, not generic containers.',
+        tagline: 'Origin matters. The fruit is the proof.',
+        body: 'Beans from Chiapas and Nariño. Altitude between 1,400 and 1,900 meters.\nHand-harvested, one by one. Washed with spring water. Sun-dried, not machine-dried, not steam-dried.\nThey arrive in Houston in burlap sacks, not generic containers. Every batch has a name, an origin, and a date.',
       },
       roast: {
         label: 'Roast',
+        tagline: 'Fourteen minutes between the bean and its character.',
         body: "Medium-dark roast. Slow.\nExactly fourteen minutes. Enough to bring out the chocolate, not so much as to lose the fruit.\nEvery batch carries the date it left the roaster. If it takes more than three weeks to reach you, we don't ship it.",
       },
       ritual: {
         label: 'Ritual',
-        body: 'One cup, not two. Filter, not espresso.\nAt 11pm, not 7am.\nNot to wake you up. To keep you company.',
+        tagline: '11pm coffee has its own rules.',
+        body: 'One cup, not two. Filter, not espresso. No sugar.\nAt 11pm, not 7am. The night has its own tempo.\nNot to wake you up. To keep you company in the part of the day everyone else has already forgotten.',
       },
     },
     lineup: {

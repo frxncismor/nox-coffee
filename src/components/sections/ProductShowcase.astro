@@ -10,6 +10,7 @@ const panels = [
     id: 'origin',
     index: '01',
     label: t.showcase.origin.label,
+    tagline: t.showcase.origin.tagline,
     body: t.showcase.origin.body,
     imageUrl: 'https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=1400&h=900&fit=crop&q=85',
     imageAlt: 'Coffee cherries at origin farm',
@@ -18,14 +19,16 @@ const panels = [
     id: 'roast',
     index: '02',
     label: t.showcase.roast.label,
+    tagline: t.showcase.roast.tagline,
     body: t.showcase.roast.body,
-    imageUrl: 'https://images.unsplash.com/photo-1559525839-e4a7db06bac5?w=1400&h=900&fit=crop&q=85',
+    imageUrl: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=1400&h=900&fit=crop&q=85',
     imageAlt: 'Coffee beans during roasting process',
   },
   {
     id: 'ritual',
     index: '03',
     label: t.showcase.ritual.label,
+    tagline: t.showcase.ritual.tagline,
     body: t.showcase.ritual.body,
     imageUrl: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1400&h=900&fit=crop&q=85',
     imageAlt: 'Brewing ritual — coffee cup at night',
@@ -103,10 +106,23 @@ const panels = [
               {panel.label}
             </p>
 
+            <!-- Tagline — medium Fraunces display text -->
+            <p style="
+              font-family: var(--font-fraunces), serif;
+              font-size: clamp(20px, 1.8vw, 28px);
+              font-style: italic;
+              line-height: 1.25;
+              color: var(--nox-fg);
+              opacity: 0.75;
+              margin-bottom: 2rem;
+            ">
+              {panel.tagline}
+            </p>
+
             <!-- Body copy -->
             <div
               class="text-body max-w-xl"
-              style="color: var(--nox-fg); opacity: 0.85;"
+              style="color: var(--nox-fg); opacity: 0.85; font-size: clamp(15px, 1.3vw, 19px); line-height: 1.7;"
             >
               {panel.body.split('\n').map((line) => (
                 <p style="margin-bottom: 0.75em;">{line}</p>
@@ -163,9 +179,20 @@ const panels = [
           >
             {panel.label}
           </p>
+          <p style="
+            font-family: var(--font-fraunces), serif;
+            font-size: clamp(18px, 4vw, 24px);
+            font-style: italic;
+            line-height: 1.25;
+            color: var(--nox-fg);
+            opacity: 0.75;
+            margin-bottom: 1.5rem;
+          ">
+            {panel.tagline}
+          </p>
           <div
             class="text-body"
-            style="color: var(--nox-fg); opacity: 0.85;"
+            style="color: var(--nox-fg); opacity: 0.85; font-size: clamp(15px, 4vw, 17px); line-height: 1.7;"
           >
             {panel.body.split('\n').map((line) => (
               <p style="margin-bottom: 0.75em;">{line}</p>
