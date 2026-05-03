@@ -3,14 +3,22 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 interface Opts {
   desktop: boolean;
+  reducedMotion: boolean;
 }
 
-export function initHero({ desktop: _desktop }: Opts): void {
+export function initHero({ desktop: _desktop, reducedMotion }: Opts): void {
   const chars = document.querySelectorAll<HTMLElement>('[data-hero-char]');
   const tagline = document.querySelector<HTMLElement>('[data-hero-tagline]');
   const scrollCue = document.querySelector<HTMLElement>('[data-scroll-cue]');
 
   if (!chars.length) return;
+
+  if (reducedMotion) {
+    gsap.set(chars, { opacity: 1, y: 0, filter: 'blur(0px)' });
+    if (tagline) gsap.set(tagline, { opacity: 1, y: 0 });
+    if (scrollCue) gsap.set(scrollCue, { opacity: 0.4 });
+    return;
+  }
 
   // Brand name: chars appear one by one, from dim to full — like eyes adjusting to dark
   const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });

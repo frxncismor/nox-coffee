@@ -4,6 +4,13 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
+// ⬇⬇⬇ AGREGAR ESTA LÍNEA — solo en dev, para diagnóstico
+if (import.meta.env.DEV) {
+  (window as any).ScrollTrigger = ScrollTrigger;
+  (window as any).gsap = gsap;
+  console.log('[Nox] GSAP & ScrollTrigger exposed on window for debugging');
+}
+
 declare global {
   interface Window {
     __noxInit?: boolean;
@@ -36,8 +43,6 @@ export function bootNox(): void {
 
   // Skip animations for users who prefer reduced motion
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (prefersReducedMotion) return;
-
   const isDesktop = window.matchMedia('(min-width: 1024px)').matches;
 
   // Easter Egg 3: film grain opacity increases with scroll depth
@@ -54,13 +59,15 @@ export function bootNox(): void {
     });
   }
 
+  const opts = { desktop: isDesktop, reducedMotion: prefersReducedMotion };
+
   // Import and initialize all trigger modules
   Promise.all([
-    import('./triggers/hero').then((m) => m.initHero({ desktop: isDesktop })),
-    import('./triggers/story').then((m) => m.initStory({ desktop: isDesktop })),
-    import('./triggers/product').then((m) => m.initProduct({ desktop: isDesktop })),
-    import('./triggers/lineup').then((m) => m.initLineup({ desktop: isDesktop })),
-    import('./triggers/cta').then((m) => m.initCta({ desktop: isDesktop })),
+    import('./triggers/hero').then((m) => m.initHero(opts)),
+    import('./triggers/story').then((m) => m.initStory(opts)),
+    import('./triggers/product').then((m) => m.initProduct(opts)),
+    import('./triggers/lineup').then((m) => m.initLineup(opts)),
+    import('./triggers/cta').then((m) => m.initCta(opts)),
     import('./triggers/scroll-progress').then((m) => m.initScrollProgress()),
   ])
     .then(() => {

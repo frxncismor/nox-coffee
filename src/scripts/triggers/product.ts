@@ -3,14 +3,31 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 interface Opts {
   desktop: boolean;
+  reducedMotion: boolean;
 }
 
-export function initProduct({ desktop }: Opts): void {
+export function initProduct({ desktop, reducedMotion }: Opts): void {
   const section = document.querySelector<HTMLElement>('[data-showcase-section]');
   const bag = document.querySelector<HTMLElement>('[data-showcase-bag]');
   const panels = document.querySelectorAll<HTMLElement>('[data-panel]');
 
   if (!section || !bag || !panels.length) return;
+
+  if (reducedMotion) {
+    gsap.set(bag, { scale: 1 });
+    panels.forEach((panel) => {
+      gsap.from(panel, {
+        opacity: 0,
+        duration: 0.5,
+        scrollTrigger: {
+          trigger: panel,
+          start: 'top 85%',
+          toggleActions: 'play none none reverse',
+        },
+      });
+    });
+    return;
+  }
 
   if (!desktop) {
     // Mobile: stack panels, simple reveal

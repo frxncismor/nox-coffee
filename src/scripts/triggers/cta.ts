@@ -3,9 +3,24 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 interface Opts {
   desktop: boolean;
+  reducedMotion: boolean;
 }
 
-export function initCta({ desktop: _desktop }: Opts): void {
+export function initCta({ desktop: _desktop, reducedMotion }: Opts): void {
+  if (reducedMotion) {
+    gsap.from('[data-section="cta"] .cta-headline, [data-section="cta"] .cta-subhead', {
+      opacity: 0,
+      duration: 0.5,
+      stagger: 0.15,
+      scrollTrigger: {
+        trigger: '[data-section="cta"]',
+        start: 'top 80%',
+        toggleActions: 'play none none reverse',
+      },
+    });
+    return;
+  }
+
   gsap.context(() => {
     gsap.fromTo(
       '[data-section="cta"] .cta-headline',

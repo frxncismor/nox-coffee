@@ -3,9 +3,19 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 interface Opts {
   desktop: boolean;
+  reducedMotion: boolean;
 }
 
-export function initLineup({ desktop }: Opts): void {
+export function initLineup({ desktop, reducedMotion }: Opts): void {
+  if (reducedMotion) {
+    const track = document.querySelector<HTMLElement>('[data-lineup-track]');
+    const cards = track?.querySelectorAll<HTMLElement>('[data-product-card]') ?? [];
+    cards.forEach((card) => {
+      gsap.set(card, { scale: 1, opacity: 1 });
+    });
+    return;
+  }
+
   // Mobile: no-op — CSS handles native horizontal scroll
   if (!desktop) return;
 

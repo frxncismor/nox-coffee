@@ -3,13 +3,29 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 interface Opts {
   desktop: boolean;
+  reducedMotion: boolean;
 }
 
-export function initStory({ desktop }: Opts): void {
+export function initStory({ desktop, reducedMotion }: Opts): void {
   const section = document.querySelector<HTMLElement>('[data-story-section]');
   const blocks = document.querySelectorAll<HTMLElement>('[data-story-block]');
 
   if (!section || !blocks.length) return;
+
+  if (reducedMotion) {
+    blocks.forEach((block) => {
+      gsap.from(block, {
+        opacity: 0,
+        duration: 0.5,
+        scrollTrigger: {
+          trigger: block,
+          start: 'top 85%',
+          toggleActions: 'play none none reverse',
+        },
+      });
+    });
+    return;
+  }
 
   if (!desktop) {
     // Mobile: simple IntersectionObserver fade-in per block
