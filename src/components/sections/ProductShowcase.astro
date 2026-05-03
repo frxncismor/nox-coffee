@@ -39,10 +39,10 @@ const panels = [
       class="
         flex items-center justify-center
         py-16 px-8 lg:py-0
-        lg:sticky lg:top-0 lg:h-screen
+        lg:h-full
       "
     >
-      <div style="will-change: transform;" class="w-full max-w-sm">
+      <div style="will-change: transform;" class="w-full max-w-sm" data-showcase-bag>
         <Image
           src={bagImageUrl}
           alt={bagImageAlt}
@@ -50,7 +50,6 @@ const panels = [
           height={900}
           loading="lazy"
           decoding="async"
-          data-showcase-bag
           class="w-full h-auto object-contain drop-shadow-2xl"
         />
       </div>

@@ -6,15 +6,16 @@ const allText = copy.story.blocks.map((b) => b.text.replace(/\n/g, ' ')).join(' 
 
 <section
   data-story-section
-  class="min-h-screen flex flex-col items-center justify-center px-6 py-32"
+  class="min-h-screen lg:h-screen flex flex-col items-center justify-center px-6 py-32 lg:py-0 lg:overflow-hidden"
   aria-label={allText}
 >
-  <div class="max-w-3xl w-full relative">
-    {copy.story.blocks.map((block) => (
+  <div class="max-w-3xl w-full relative lg:h-full">
+    {copy.story.blocks.map((block, blockIndex) => (
       <div
         data-story-block
         class="lg:absolute lg:inset-0 lg:flex lg:flex-col lg:justify-center mb-16 lg:mb-0"
         aria-hidden="true"
+        style={`opacity: ${blockIndex === 0 ? 1 : 0};`}
       >
         {block.text.split('\n').map((line) => (
           <p

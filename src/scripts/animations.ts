@@ -62,7 +62,11 @@ export function bootNox(): void {
     import('./triggers/lineup').then((m) => m.initLineup({ desktop: isDesktop })),
     import('./triggers/cta').then((m) => m.initCta({ desktop: isDesktop })),
     import('./triggers/scroll-progress').then((m) => m.initScrollProgress()),
-  ]).catch((err) => {
-    console.error('[Nox] Animation init failed:', err);
-  });
+  ])
+    .then(() => {
+      ScrollTrigger.refresh();
+    })
+    .catch((err) => {
+      console.error('[Nox] Animation init failed:', err);
+    });
 }
