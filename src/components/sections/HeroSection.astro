@@ -1,26 +1,26 @@
 ---
 import { Image } from 'astro:assets';
-import { heroCopy } from '../../content/copy';
+import { copy } from '../../content/copy';
 
-const chars = heroCopy.headline.split('');
+const chars = copy.hero.brand.split('');
 const heroImageUrl = 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1920&h=1080&fit=crop&q=85';
 ---
 
 <section
-  data-section="hero"
+  data-hero-section
   class="relative overflow-hidden"
   style="height: 100svh;"
   aria-label="Hero"
 >
   <!-- Background image with parallax target -->
   <div
-    data-parallax
+    data-hero-image
     class="absolute inset-0"
     style="will-change: transform;"
   >
     <Image
       src={heroImageUrl}
-      alt="Dark moody coffee atmosphere — the hours that matter"
+      alt="Dark moody coffee atmosphere — las horas que importan"
       width={1920}
       height={1080}
       loading="eager"
@@ -40,32 +40,33 @@ const heroImageUrl = 'https://images.unsplash.com/photo-1495474472287-4d71bcdd20
 
   <!-- Hero content -->
   <div class="relative z-10 flex flex-col items-center justify-center h-full text-center px-6">
-    <!-- NOX headline — each char wrapped for JS animation -->
+    <!-- NOX headline — each char wrapped for blur-in animation -->
     <h1
       class="text-display-xl"
       style="color: var(--nox-fg); letter-spacing: -0.04em; line-height: 0.85;"
-      aria-label={heroCopy.headline}
+      aria-label={copy.hero.brand}
     >
       {chars.map((char) => (
-        <span data-char class="inline-block" aria-hidden="true">{char}</span>
+        <span data-hero-char class="inline-block" aria-hidden="true">{char}</span>
       ))}
     </h1>
 
     <!-- Tagline -->
     <p
-      class="hero-tagline mt-6"
-      style="font-family: var(--font-inter), sans-serif; font-weight: 400; font-size: clamp(16px, 2vw, 24px); color: var(--nox-accent); opacity: 0;"
+      data-hero-tagline
+      style="font-family: var(--font-inter), sans-serif; font-weight: 400; font-size: clamp(16px, 2vw, 24px); color: var(--nox-accent); opacity: 0; margin-top: 1.5rem;"
     >
-      {heroCopy.tagline}
+      {copy.hero.tagline}
     </p>
 
-    <!-- Scroll indicator -->
+    <!-- Scroll cue — whispered, no arrows -->
     <div
-      class="scroll-indicator absolute bottom-8"
+      data-scroll-cue
+      class="absolute bottom-8"
       aria-hidden="true"
-      style="color: var(--nox-fg); opacity: 0.5;"
+      style="color: var(--nox-fg); opacity: 0.4;"
     >
-      <p class="text-label" style="letter-spacing: 0.2em;">↓ {heroCopy.scrollIndicator}</p>
+      <p class="text-label" style="letter-spacing: 0.2em; text-transform: lowercase;">{copy.hero.scrollCue}</p>
     </div>
   </div>
 </section>

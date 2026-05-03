@@ -1,50 +1,88 @@
-export const heroCopy = {
-  headline: 'NOX',
-  tagline: 'Coffee for the hours that matter',
-  scrollIndicator: 'Scroll',
+export const copy = {
+  hero: {
+    brand: 'NOX',
+    tagline: 'Café para las horas que importan.',
+    scrollCue: 'desplázate',
+  },
+  story: {
+    blocks: [
+      {
+        text: 'Hay una hora donde la ciudad se rinde.\nLos coches se apagan. Los mensajes dejan de llegar. El refrigerador suena más fuerte que nunca.',
+      },
+      {
+        text: 'Y tú sigues despierto.\nNo por insomnio. Por elección.',
+      },
+      {
+        text: 'Porque el mejor pensamiento no llega cuando lo programaste.\nLlega tarde. Llega solo. Llega cuando ya nadie pide nada.',
+      },
+      {
+        text: 'Para esa hora no sirve el café de la mañana.\nEsa hora pide otra cosa.',
+      },
+    ],
+  },
+  showcase: {
+    origin: {
+      label: 'Origen',
+      body: 'Granos de Chiapas y Nariño.\nCosechados a mano. Lavados con agua de manantial. Secados al sol, no en máquinas.\nLlegan a Houston en sacos de yute, no en contenedores genéricos.',
+    },
+    roast: {
+      label: 'Tueste',
+      body: 'Tueste medio-oscuro. Lento.\nCatorce minutos exactos. Suficiente para sacar el chocolate, no tanto como para perder la fruta.\nCada lote lleva la fecha del día que salió del tostador. Si tarda más de tres semanas en llegarte, no lo enviamos.',
+    },
+    ritual: {
+      label: 'Ritual',
+      body: 'Una taza, no dos. Filtro, no espresso.\nA las 11pm, no a las 7am.\nNo es para despertarte. Es para acompañarte.',
+    },
+  },
+  lineup: {
+    heading: 'La línea Nox',
+    subheading: 'Cuatro tuestes para cuatro momentos de la noche.',
+  },
+  cta: {
+    heading: 'Tu turno.',
+    subtext: 'Empieza por donde sea. La noche no juzga.',
+    button: 'Probar la línea — desde $24',
+    shipping: 'Envíos a toda la república. Tres semanas máximo desde el tueste.',
+  },
+  footer: {
+    brand: 'Nox Coffee',
+    unsplashUrl: 'https://unsplash.com',
+    photoCredit: 'Fotos de Unsplash',
+  },
 } as const;
 
-export const storyCopy = `Some nights the world goes quiet, and it's just you and the work. Not the work that pays the bills — the work that keeps you up. The idea you can't ignore, the problem that won't wait, the page that needs one more draft. Nox was roasted for those hours. Not the polished morning ritual with ceramic cups and weekend newspapers. The other kind. When the city has finally stopped performing and you can hear yourself think. We source from farms at altitude, where the cold slows everything down and the beans develop slowly, honestly. The result is coffee with something to say. Pour it. Drink it black or not. Then get back to what matters.` as const;
-
-export const showcasePanels = [
-  {
-    id: 'origin' as const,
-    label: 'Origin',
-    title: 'From elevation to ritual',
-    body: `We work with three farms — two in Colombia's Huila region, one in the highlands of Ethiopia. All three sit above 1,800 meters, where slower maturation concentrates sugars and deepens complexity. Our sourcing director visits every harvest season. We pay above Fair Trade floor prices because the math only works if the farmers stay. No certifications theater — just direct relationships and shared stakes.`,
-  },
-  {
-    id: 'roast' as const,
-    label: 'Roast',
-    title: 'Roasted to the edge of night',
-    body: `Every batch is roasted in small lots — never more than 22 kilos at a time — on a cast-iron drum roaster from the seventies that we refuse to replace. Medium-dark, pulled just before second crack, preserving origin character while developing the caramel and smoke notes that define our profile. We roast twice a week. You get it within 48 hours of the drum going cold.`,
-  },
-  {
-    id: 'ritual' as const,
-    label: 'Ritual',
-    title: 'The 1am cup',
-    body: `Heat the kettle to 93°C. Use 1 gram of coffee for every 15 grams of water. Pour slowly — not because the YouTube video said to, but because it forces you to stop rushing. Let it bloom for 45 seconds. Finish the pour in two or three passes. The whole thing takes four minutes. You can afford four minutes, even tonight. Especially tonight.`,
-  },
-] as const;
-
+// Legacy named exports for backward compatibility with existing components
 export const ctaCopy = {
-  headline: 'Your turn.',
-  subHeadline: 'The hours between midnight and dawn are yours. Make them count.',
-  buttonLabel: 'Shop the Collection',
+  headline: copy.cta.heading,
+  subHeadline: copy.cta.subtext,
+  buttonLabel: copy.cta.button,
   buttonHref: '#',
 } as const;
 
 export const footerCopy = {
-  brand: 'Nox Coffee',
-  year: '2025',
-  photoCredit: 'Photos: Unsplash',
-  unsplashUrl: 'https://unsplash.com',
+  brand: copy.footer.brand,
+  unsplashUrl: copy.footer.unsplashUrl,
+  photoCredit: copy.footer.photoCredit,
 } as const;
 
-export interface SiteCopy {
-  heroCopy: typeof heroCopy;
-  storyCopy: typeof storyCopy;
-  showcasePanels: typeof showcasePanels;
-  ctaCopy: typeof ctaCopy;
-  footerCopy: typeof footerCopy;
-}
+// Showcase panels array for ProductShowcase (derived from copy.showcase)
+export const showcasePanels = [
+  {
+    id: 'origin' as const,
+    label: copy.showcase.origin.label,
+    title: copy.showcase.origin.label,
+    body: copy.showcase.origin.body.replace(/\n/g, ' '),
+  },
+  {
+    id: 'roast' as const,
+    label: copy.showcase.roast.label,
+    title: copy.showcase.roast.label,
+    body: copy.showcase.roast.body.replace(/\n/g, ' '),
+  },
+  {
+    id: 'ritual' as const,
+    label: copy.showcase.ritual.label,
+    title: copy.showcase.ritual.label,
+    body: copy.showcase.ritual.body.replace(/\n/g, ' '),
+  },
+] as const;

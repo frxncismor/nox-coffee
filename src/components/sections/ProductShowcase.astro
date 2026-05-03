@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import { showcasePanels } from '../../content/copy';
+import { copy } from '../../content/copy';
 
 interface Props {
   bagImageUrl?: string;
@@ -11,10 +11,16 @@ const {
   bagImageUrl = 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=600&h=900&fit=crop&q=85',
   bagImageAlt = 'Nox Coffee bag — single-origin specialty roast',
 } = Astro.props;
+
+const panels = [
+  { id: 'origin', label: copy.showcase.origin.label, body: copy.showcase.origin.body },
+  { id: 'roast', label: copy.showcase.roast.label, body: copy.showcase.roast.body },
+  { id: 'ritual', label: copy.showcase.ritual.label, body: copy.showcase.ritual.body },
+] as const;
 ---
 
 <section
-  data-section="product"
+  data-showcase-section
   class="min-h-screen"
   style="background: var(--nox-bg);"
 >
@@ -44,7 +50,7 @@ const {
           height={900}
           loading="lazy"
           decoding="async"
-          data-bag
+          data-showcase-bag
           class="w-full h-auto object-contain drop-shadow-2xl"
         />
       </div>
@@ -59,39 +65,32 @@ const {
         lg:h-screen lg:flex lg:items-center
       "
     >
-      {showcasePanels.map((panel, index) => (
+      {panels.map((panel, index) => (
         <div
           data-panel={panel.id}
           class={`
             lg:absolute lg:inset-x-0 lg:px-16 lg:flex lg:flex-col lg:justify-center lg:h-full
             mb-16 lg:mb-0
-            ${index === 0 ? '' : 'lg:opacity-0'}
           `}
           style={index === 0 ? '' : 'opacity: 0;'}
         >
-          <!-- Panel label -->
+          <!-- Panel label — small caps, gold accent -->
           <p
-            class="text-label mb-4"
-            style="color: var(--nox-accent);"
+            class="text-label mb-6"
+            style="color: var(--nox-accent); font-variant: small-caps;"
           >
             {panel.label}
           </p>
 
-          <!-- Panel heading -->
-          <h2
-            class="text-display-md mb-8"
-            style="color: var(--nox-fg);"
-          >
-            {panel.title}
-          </h2>
-
-          <!-- Panel body -->
-          <p
+          <!-- Panel body — \n converted to line breaks -->
+          <div
             class="text-body max-w-xl"
-            style="color: var(--nox-fg); opacity: 0.8;"
+            style="color: var(--nox-fg); opacity: 0.85;"
           >
-            {panel.body}
-          </p>
+            {panel.body.split('\n').map((line) => (
+              <p style="margin-bottom: 0.75em;">{line}</p>
+            ))}
+          </div>
         </div>
       ))}
     </div>

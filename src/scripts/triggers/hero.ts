@@ -5,49 +5,60 @@ interface Opts {
   desktop: boolean;
 }
 
-export function initHero({ desktop }: Opts): void {
-  gsap.context(() => {
-    // Char-by-char reveal — fires on load, not on scroll
-    gsap.from('[data-char]', {
-      autoAlpha: 0,
-      y: 60,
-      stagger: 0.05,
-      duration: 0.8,
-      ease: 'power2.out',
-      delay: 0.3,
+export function initHero({ desktop: _desktop }: Opts): void {
+  const chars = document.querySelectorAll<HTMLElement>('[data-hero-char]');
+  const tagline = document.querySelector<HTMLElement>('[data-hero-tagline]');
+  const scrollCue = document.querySelector<HTMLElement>('[data-scroll-cue]');
+
+  if (!chars.length) return;
+
+  // Brand name: chars appear one by one, from dim to full — like eyes adjusting to dark
+  const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+  tl.fromTo(
+    chars,
+    { opacity: 0, y: 30, filter: 'blur(8px)' },
+    { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1.2, stagger: 0.08 }
+  );
+
+  if (tagline) {
+    tl.fromTo(
+      tagline,
+      { opacity: 0, y: 12 },
+      { opacity: 1, y: 0, duration: 1, ease: 'power2.out' },
+      '-=0.4'
+    );
+  }
+
+  // Scroll cue: pulses gently, fades on first scroll
+  if (scrollCue) {
+    gsap.to(scrollCue, {
+      y: 6,
+      repeat: -1,
+      yoyo: true,
+      duration: 1.5,
+      ease: 'sine.inOut',
     });
 
-    // Tagline fades in after chars complete
-    gsap.from('.hero-tagline', {
-      autoAlpha: 0,
-      y: 20,
-      duration: 0.6,
-      ease: 'power2.out',
-      delay: 1.3,
-    });
-
-    // Scroll indicator fades when user scrolls 10% into hero
     ScrollTrigger.create({
-      trigger: '[data-section="hero"]',
       start: 'top top',
-      end: '10% top',
-      onLeave: () => {
-        gsap.to('.scroll-indicator', { autoAlpha: 0, duration: 0.3 });
+      end: '5% top',
+      onEnter: () => gsap.to(scrollCue, { opacity: 0, duration: 0.4 }),
+    });
+  }
+
+  // Hero image parallax: slower than scroll — creates depth
+  const heroImage = document.querySelector<HTMLElement>('[data-hero-image]');
+  if (heroImage) {
+    gsap.to(heroImage, {
+      yPercent: 20,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '[data-hero-section]',
+        start: 'top top',
+        end: 'bottom top',
+        scrub: true,
       },
     });
-
-    // Parallax on hero image — desktop only
-    if (desktop) {
-      gsap.to('[data-parallax]', {
-        scrollTrigger: {
-          trigger: '[data-section="hero"]',
-          start: 'top top',
-          end: 'bottom top',
-          scrub: 1,
-        },
-        y: '30%',
-        ease: 'none',
-      });
-    }
-  });
+  }
 }

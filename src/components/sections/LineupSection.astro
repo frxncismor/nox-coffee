@@ -1,10 +1,11 @@
 ---
 import { products } from '../../data/products';
+import { copy } from '../../content/copy';
 import ProductCard from '../ui/ProductCard.astro';
 ---
 
 <section
-  data-section="lineup"
+  data-lineup-section
   class="min-h-screen flex flex-col justify-center py-16 lg:py-0"
   style="background: var(--nox-bg); overflow: hidden;"
 >
@@ -14,13 +15,13 @@ import ProductCard from '../ui/ProductCard.astro';
       class="text-label mb-4"
       style="color: var(--nox-accent);"
     >
-      Collection
+      {copy.lineup.subheading}
     </p>
     <h2
       class="text-display-lg"
       style="color: var(--nox-fg);"
     >
-      The Lineup
+      {copy.lineup.heading}
     </h2>
   </div>
 
@@ -51,13 +52,13 @@ import ProductCard from '../ui/ProductCard.astro';
             overflow: visible;
           }
 
-          [data-card] {
+          [data-product-card] {
             min-width: 280px;
           }
         }
 
         @media (max-width: 1023px) {
-          [data-card] {
+          [data-product-card] {
             min-width: 80vw;
           }
         }

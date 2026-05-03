@@ -1,42 +1,33 @@
 ---
-import { storyCopy } from '../../content/copy';
+import { copy } from '../../content/copy';
 
-const words = storyCopy.split(' ');
+const allText = copy.story.blocks.map((b) => b.text.replace(/\n/g, ' ')).join(' ');
 ---
 
 <section
-  data-section="story"
+  data-story-section
   class="min-h-screen flex flex-col items-center justify-center px-6 py-32"
-  aria-label={storyCopy}
+  aria-label={allText}
 >
-  <div class="max-w-3xl w-full">
-    <!-- Eyebrow label -->
-    <p
-      class="text-label mb-10"
-      style="color: var(--nox-accent);"
-      aria-hidden="true"
-    >
-      The Story
-    </p>
+  <div class="max-w-3xl w-full relative">
+    {copy.story.blocks.map((block) => (
+      <div
+        data-story-block
+        class="lg:absolute lg:inset-0 lg:flex lg:flex-col lg:justify-center mb-16 lg:mb-0"
+        aria-hidden="true"
+      >
+        {block.text.split('\n').map((line) => (
+          <p
+            class="text-display-md leading-relaxed"
+            style="color: var(--nox-fg);"
+          >
+            {line}
+          </p>
+        ))}
+      </div>
+    ))}
 
-    <!-- Visual layer: word-by-word animation target -->
-    <p
-      class="text-display-md leading-relaxed"
-      style="color: var(--nox-fg);"
-      aria-hidden="true"
-    >
-      {words.map((word) => (
-        <span
-          data-word
-          class="inline"
-          style="opacity: 0.15; transition: opacity 0.3s ease;"
-        >
-          {word}{' '}
-        </span>
-      ))}
-    </p>
-
-    <!-- Screen reader accessible version of the full text -->
-    <p class="sr-only">{storyCopy}</p>
+    <!-- Screen reader accessible version -->
+    <p class="sr-only">{allText}</p>
   </div>
 </section>

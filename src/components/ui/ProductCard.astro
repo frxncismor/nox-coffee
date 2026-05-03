@@ -10,7 +10,7 @@ const { product } = Astro.props;
 ---
 
 <li
-  data-card
+  data-product-card
   class="flex-shrink-0 flex flex-col"
   style="width: 280px; min-width: 280px; scroll-snap-align: start;"
 >
@@ -21,7 +21,7 @@ const { product } = Astro.props;
   >
     <Image
       src={product.imageUrl}
-      alt={product.imageAlt}
+      alt={`${product.name} — ${product.subtitle}`}
       width={280}
       height={380}
       loading="lazy"
@@ -32,23 +32,52 @@ const { product } = Astro.props;
 
   <!-- Product info -->
   <div class="px-1">
+    <!-- Time — small, muted -->
+    <p
+      class="text-label mb-2"
+      style="color: var(--nox-fg); opacity: 0.35; text-transform: none; letter-spacing: 0.04em; font-size: 11px; font-weight: 400;"
+    >
+      {product.time}
+    </p>
+
+    <!-- Name — Fraunces, large -->
     <h3
-      class="text-display-md mb-2"
+      class="text-display-md mb-1"
       style="color: var(--nox-fg); font-size: clamp(24px, 3vw, 36px);"
     >
       {product.name}
     </h3>
+
+    <!-- Subtitle — Inter, small, muted -->
+    <p
+      class="text-label mb-3"
+      style="color: var(--nox-fg); opacity: 0.5; text-transform: none; letter-spacing: 0.02em; font-weight: 400;"
+    >
+      {product.subtitle}
+    </p>
+
+    <!-- Notes — Inter, small -->
     <p
       class="text-label mb-4"
-      style="color: var(--nox-fg); opacity: 0.5; text-transform: none; letter-spacing: 0.02em; font-weight: 400;"
+      style="color: var(--nox-fg); opacity: 0.45; text-transform: none; letter-spacing: 0.01em; font-weight: 400; font-size: 12px;"
     >
       {product.notes}
     </p>
-    <p
-      class="text-label"
-      style="color: var(--nox-accent);"
-    >
-      {product.price}
-    </p>
+
+    <!-- Roast + price -->
+    <div class="flex items-center justify-between">
+      <p
+        class="text-label"
+        style="color: var(--nox-fg); opacity: 0.4; text-transform: none; font-weight: 400; font-size: 11px;"
+      >
+        {product.roast}
+      </p>
+      <p
+        class="text-label"
+        style="color: var(--nox-accent);"
+      >
+        {product.price}
+      </p>
+    </div>
   </div>
 </li>

@@ -40,6 +40,20 @@ export function bootNox(): void {
 
   const isDesktop = window.matchMedia('(min-width: 1024px)').matches;
 
+  // Easter Egg 3: film grain opacity increases with scroll depth
+  const grain = document.querySelector<HTMLElement>('.film-grain');
+  if (grain) {
+    ScrollTrigger.create({
+      start: 0,
+      end: 'max',
+      scrub: 0,
+      onUpdate: (self) => {
+        const opacity = 0.035 + self.progress * 0.025;
+        grain.style.opacity = String(opacity);
+      },
+    });
+  }
+
   // Import and initialize all trigger modules
   Promise.all([
     import('./triggers/hero').then((m) => m.initHero({ desktop: isDesktop })),

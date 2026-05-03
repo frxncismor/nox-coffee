@@ -1,43 +1,53 @@
 export interface Product {
-  id: 'dusk' | 'twilight' | 'midnight' | 'dawn';
+  id: string;
   name: string;
+  subtitle: string;
   notes: string;
+  roast: string;
   price: string;
+  time: string;
   imageUrl: string;
-  imageAlt: string;
 }
 
 export const products: Product[] = [
   {
     id: 'dusk',
     name: 'Dusk',
-    notes: 'Stone fruit, honey, cedar',
-    price: '$18',
-    imageUrl: 'https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=800&h=1000&fit=crop',
-    imageAlt: 'Dusk single-origin coffee — warm tones with stone fruit and honey notes',
+    subtitle: 'Para empezar la noche.',
+    notes: 'Suave. Notas de chocolate con leche, almendra tostada, miel.',
+    roast: 'Tueste medio. 250g',
+    price: '$24',
+    time: '9pm – 11pm',
+    imageUrl: 'https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=600&q=80',
   },
   {
     id: 'twilight',
     name: 'Twilight',
-    notes: 'Dark chocolate, smoke, dried cherry',
-    price: '$22',
-    imageUrl: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&h=1000&fit=crop',
-    imageAlt: 'Twilight coffee — dark roast with chocolate and smoke character',
+    subtitle: 'Para entrar en flujo.',
+    notes: 'Equilibrado. Notas de cacao oscuro, ciruela, naranja.',
+    roast: 'Tueste medio-oscuro. 250g',
+    price: '$26',
+    time: '11pm – 1am',
+    imageUrl: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&q=80',
   },
   {
     id: 'midnight',
     name: 'Midnight',
-    notes: 'Espresso, black walnut, molasses',
-    price: '$24',
-    imageUrl: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800&h=1000&fit=crop',
-    imageAlt: 'Midnight coffee — deep espresso with black walnut and molasses finish',
+    subtitle: 'Para la hora más larga.',
+    notes: 'Profundo. Notas de tabaco, melaza, nuez negra.',
+    roast: 'Tueste oscuro. 250g',
+    price: '$28',
+    time: '1am – 4am',
+    imageUrl: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=600&q=80',
   },
   {
     id: 'dawn',
     name: 'Dawn',
-    notes: 'Floral, bergamot, bright acidity',
-    price: '$19',
-    imageUrl: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=800&h=1000&fit=crop',
-    imageAlt: 'Dawn light roast — floral and bergamot with bright citrus acidity',
+    subtitle: 'Para terminar lo que empezaste.',
+    notes: 'Brillante. Notas de cítrico, panela, hibisco.',
+    roast: 'Tueste claro. 250g',
+    price: '$26',
+    time: '4am – 7am',
+    imageUrl: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=600&q=80',
   },
 ];

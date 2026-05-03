@@ -1,64 +1,75 @@
 import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 interface Opts {
   desktop: boolean;
 }
 
 export function initProduct({ desktop }: Opts): void {
-  gsap.context(() => {
-    if (desktop) {
-      const trigger = '[data-section="product"]';
+  const section = document.querySelector<HTMLElement>('[data-showcase-section]');
+  const bag = document.querySelector<HTMLElement>('[data-showcase-bag]');
+  const panels = document.querySelectorAll<HTMLElement>('[data-panel]');
 
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger,
-          start: 'top top',
-          end: '+=3000',
-          pin: true,
-          scrub: 1,
-        },
-      });
+  if (!section || !bag || !panels.length) return;
 
-      // Bag rotation/scale sequence across 3 keyframes
-      tl.to('[data-bag]', { rotate: 5, scale: 1.1, ease: 'none' }, 0)
-        .to('[data-bag]', { rotate: -5, scale: 0.95, ease: 'none' }, 0.5)
-        .to('[data-bag]', { rotate: 0, scale: 1, ease: 'none' }, 1);
-
-      // Panel cross-fades: divide scroll into thirds
-      // Origin: visible at start, fades out at 33%
-      tl.to('[data-panel="origin"]', { autoAlpha: 0, ease: 'none' }, 0.33);
-
-      // Roast: fades in at 33%, fades out at 66%
-      tl.fromTo(
-        '[data-panel="roast"]',
-        { autoAlpha: 0 },
-        { autoAlpha: 1, ease: 'none' },
-        0.25
-      );
-      tl.to('[data-panel="roast"]', { autoAlpha: 0, ease: 'none' }, 0.66);
-
-      // Ritual: fades in at 66%, stays until end
-      tl.fromTo(
-        '[data-panel="ritual"]',
-        { autoAlpha: 0 },
-        { autoAlpha: 1, ease: 'none' },
-        0.58
-      );
-    } else {
-      // Mobile: each panel gets a simple scroll-entry fade
-      const panels = document.querySelectorAll<HTMLElement>('[data-panel]');
-      panels.forEach((panel) => {
-        gsap.from(panel, {
-          scrollTrigger: {
-            trigger: panel,
-            start: 'top 80%',
-          },
-          autoAlpha: 0,
-          y: 30,
-          duration: 0.8,
-          ease: 'power2.out',
+  if (!desktop) {
+    // Mobile: stack panels, simple reveal
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            gsap.to(e.target, { opacity: 1, y: 0, duration: 0.7 });
+            io.unobserve(e.target);
+          }
         });
-      });
+      },
+      { threshold: 0.2 }
+    );
+    panels.forEach((p) => {
+      gsap.set(p, { opacity: 0, y: 20 });
+      io.observe(p);
+    });
+    return;
+  }
+
+  // Set initial states
+  gsap.set(panels, { opacity: 0, x: -30 });
+  gsap.set(bag, { scale: 0.85, rotation: -8 });
+
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: section,
+      start: 'top top',
+      end: '+=300%',
+      pin: true,
+      scrub: 1.2,
+      anticipatePin: 1,
+      invalidateOnRefresh: true,
+    },
+  });
+
+  const panelKeys = ['origin', 'roast', 'ritual'] as const;
+
+  panelKeys.forEach((key, i) => {
+    const panel = section.querySelector<HTMLElement>(`[data-panel="${key}"]`);
+    const nextKey = panelKeys[i + 1];
+    const nextPanel = nextKey
+      ? section.querySelector<HTMLElement>(`[data-panel="${nextKey}"]`)
+      : null;
+    const seg = 1 / panelKeys.length;
+    const s = i * seg;
+
+    // Bag: continuous rotate and scale across full timeline — split into 3 positions
+    const rotations = [-8, 0, 8];
+    const scales = [0.85, 1.0, 1.1];
+    tl.to(bag, { rotation: rotations[i], scale: scales[i], duration: seg * 0.8, ease: 'power1.inOut' }, s);
+
+    // Panel in
+    if (panel) tl.to(panel, { opacity: 1, x: 0, duration: seg * 0.25, ease: 'power2.out' }, s + seg * 0.05);
+
+    // Panel out (before next panel arrives)
+    if (panel && nextPanel) {
+      tl.to(panel, { opacity: 0, x: 30, duration: seg * 0.2, ease: 'power1.in' }, s + seg * 0.65);
     }
   });
 }
