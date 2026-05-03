@@ -53,5 +53,40 @@ export function initLineup({ desktop, reducedMotion }: Opts): void {
         }
       );
     }
+
+    const priceEl = product.querySelector<HTMLElement>('[data-lineup-price]');
+    if (priceEl) {
+      gsap.fromTo(
+        priceEl,
+        { opacity: 0, y: 10 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.5,
+          delay: 0.3,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: product,
+            start: 'top top+=100',
+            toggleActions: 'play none none reverse',
+          },
+        }
+      );
+    }
   });
+
+  const sectionEl = document.querySelector<HTMLElement>('[data-lineup-section]');
+  if (sectionEl && products.length) {
+    ScrollTrigger.create({
+      trigger: sectionEl,
+      start: 'top top',
+      end: 'bottom bottom',
+      snap: {
+        snapTo: (progress: number) => Math.round(progress * products.length) / products.length,
+        duration: { min: 0.3, max: 0.6 },
+        delay: 0.05,
+        ease: 'power2.inOut',
+      },
+    });
+  }
 }

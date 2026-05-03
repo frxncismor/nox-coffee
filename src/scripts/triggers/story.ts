@@ -132,5 +132,22 @@ export function initStory({ desktop, reducedMotion }: Opts): void {
         );
       }
     }
+
+    // Exit the last block at the very end of the timeline
+    if (i === blocks.length - 1) {
+      const lastExit = 1 - segmentSize * 0.2;
+      tl.to(
+        block,
+        { opacity: 0, y: -32, duration: segmentSize * 0.2, ease: 'power1.in' },
+        lastExit
+      );
+      if (accent) {
+        tl.to(
+          accent,
+          { scaleY: 0, duration: segmentSize * 0.15, ease: 'power1.in', transformOrigin: 'bottom' },
+          lastExit
+        );
+      }
+    }
   });
 }

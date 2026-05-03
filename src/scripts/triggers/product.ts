@@ -47,9 +47,7 @@ export function initProduct({ desktop, reducedMotion }: Opts): void {
       trigger: section,
       start: 'top top',
       end: '+=300%',
-      pin: '[data-showcase-section] > div:first-child',
       scrub: 1.2,
-      anticipatePin: 1,
       invalidateOnRefresh: true,
     },
   });
