@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import { useTranslations, isLocale } from '../../i18n/utils';
+import LanguageToggle from '../ui/LanguageToggle.astro';
 
 const locale = isLocale(Astro.currentLocale) ? Astro.currentLocale : 'es';
 const t = useTranslations(locale);
@@ -32,6 +33,29 @@ const heroImageUrl = 'https://images.unsplash.com/photo-1495474472287-4d71bcdd20
       class="w-full h-full object-cover"
       style="transform: scale(1.1);"
     />
+  </div>
+
+  <!-- Clock — scoped to hero, scrolls away with section -->
+  <time
+    id="nox-clock"
+    aria-hidden="true"
+    style="
+      position: absolute;
+      top: 1.75rem;
+      left: 1.5rem;
+      z-index: 50;
+      font-family: var(--font-inter), monospace;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      color: var(--nox-fg);
+      opacity: 0.3;
+      transition: color 0.5s ease, opacity 0.3s ease;
+    "
+  ></time>
+
+  <!-- Language toggle — scoped to hero -->
+  <div style="position: absolute; top: 1.25rem; right: 1.5rem; z-index: 50;">
+    <LanguageToggle />
   </div>
 
   <!-- Dark gradient overlay -->
