@@ -89,10 +89,11 @@ export function initLineup({ desktop, reducedMotion }: Opts): void {
       ScrollTrigger.create({
         trigger: product,
         start: 'top top',
-        end: '+=180',
+        end: '+=400',
         pin: true,
         scrub: 1,
         animation: priceTl,
+        invalidateOnRefresh: true,
       });
     }
   });
