@@ -39,7 +39,7 @@ const panels = [
 <section
   data-showcase-section
   class="min-h-screen relative"
-  style="background: var(--nox-bg);"
+  style="background: var(--nox-bg); isolation: isolate;"
 >
   <!-- Desktop: sticky two-column split layout -->
   <div class="hidden lg:block" style="position: sticky; top: 0; height: 100vh; overflow: hidden;">
@@ -135,8 +135,8 @@ const panels = [
     </div>
   </div>
 
-  <!-- Spacer that drives the pin scroll distance (3 viewports) -->
-  <div class="hidden lg:block" style="height: 300vh;" aria-hidden="true" />
+  <!-- Spacer that drives the sticky scroll distance (3 viewports) -->
+  <div data-showcase-spacer class="hidden lg:block" style="height: 300vh;" aria-hidden="true" />
 
   <!-- Mobile: stacked panels (image + text), all visible, no GSAP -->
   <div class="lg:hidden">
