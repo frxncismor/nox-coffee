@@ -4,7 +4,6 @@ import SeoHead from '../components/ui/SeoHead.astro';
 import ScrollProgress from '../components/ui/ScrollProgress.astro';
 import FilmGrain from '../components/ui/FilmGrain.astro';
 import CustomCursor from '../components/islands/CustomCursor';
-import LanguageToggle from '../components/ui/LanguageToggle.astro';
 import { isLocale } from '../i18n/utils';
 
 interface Props {
@@ -64,9 +63,6 @@ const canonicalBase = 'https://nox-coffee.vercel.app';
     <FilmGrain />
     <!-- Custom cursor — React island, desktop only -->
     <CustomCursor client:only="react" />
-    <!-- Language toggle — fixed top-right -->
-    <LanguageToggle />
-
     <slot />
 
     <!-- Global animation boot — Astro bundles this module script -->
